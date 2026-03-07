@@ -1,60 +1,55 @@
-// Definimos la "plantilla" o clase para cada reporte
+// 1. La "Ficha" de cada reporte
 class Reporte {
     constructor(datos) {
-        this.id = datos.id || "REP-" + Date.now();
-        this.fecha = datos.fecha;
+        this.id = "REP-" + Date.now(); // Crea un número único
+        this.fecha_entrada = datos.fecha_entrada;
         this.placa = datos.placa;
-        this.vehiculo = datos.vehiculo;
-        this.kilometraje = datos.kilometraje;
-        this.falla = datos.falla;
-        this.trabajo = datos.trabajo;
+        this.vehiculo_modelo = datos.vehiculo_modelo;
+        this.km_actual = datos.km_actual;
+        this.falla_detectada = datos.falla_detectada;
+        this.trabajo_realizado = datos.trabajo_realizado;
         this.repuestos = datos.repuestos;
-        this.estado = datos.estado;
+        this.estado = datos.estado; // "En Proceso" o "Finalizado"
     }
 }
 
-// Clase que maneja toda la lógica del taller (El Administrador)
+// 2. El "Administrador" del taller
 class GestionTaller {
     constructor() {
-        // Cargamos los datos guardados al iniciar
+        // Trae los reportes guardados o empieza con una lista vacía
         this.base_de_datos = JSON.parse(localStorage.getItem("reportes_sertransafal")) || [];
     }
 
-    // Método para capturar los datos del formulario y guardarlos
-    procesarFormulario(esFinalizado) {
-        const info = {
-            fecha: document.getElementById('fecha_entrada').value,
-            placa: document.getElementById('placa').value.toUpperCase(), // Siempre en mayúsculas
-            vehiculo: document.getElementById('vehiculo_modelo').value,
-            kilometraje: document.getElementById('km_actual').value,
-            falla: document.getElementById('falla_detectada').value,
-            trabajo: document.getElementById('trabajo_realizado').value,
+    // Esta función guarda la información
+    guardarReporte(esFinalizado) {
+        // Agarramos lo que escribiste en los cuadritos del HTML
+        const datos = {
+            fecha_entrada: document.getElementById('fecha_entrada').value,
+            placa: document.getElementById('placa').value,
+            vehiculo_modelo: document.getElementById('vehiculo_modelo').value,
+            km_actual: document.getElementById('km_actual').value,
+            falla_detectada: document.getElementById('falla_detectada').value,
+            trabajo_realizado: document.getElementById('trabajo_realizado').value,
             repuestos: document.getElementById('repuestos').value,
             estado: esFinalizado ? "Finalizado" : "En Proceso"
         };
 
-        if (!info.placa) {
-            alert("⚠️ La placa es obligatoria.");
-            return;
-        }
+        // Creamos el reporte y lo metemos en la lista
+        const nuevoReporte = new Reporte(datos);
+        this.base_de_datos.push(nuevoReporte);
 
-        const nuevo = new Reporte(info);
-        this.base_de_datos.push(nuevo);
-        this.guardarEnMemoria();
-
-        alert(`✅ Reporte ${nuevo.id} guardado como ${nuevo.estado}`);
-        window.location.href = "index.html";
-    }
-
-    guardarEnMemoria() {
+        // Lo guardamos en la memoria de la PC para que no se borre
         localStorage.setItem("reportes_sertransafal", JSON.stringify(this.base_de_datos));
+
+        alert("¡Reporte guardado con éxito como: " + nuevoReporte.estado + "!");
+        window.location.href = "index.html"; // Nos regresa al inicio
     }
 }
 
-// Creamos una instancia única del administrador para usarla en la página
+// Creamos al administrador para que esté listo para trabajar
 const taller = new GestionTaller();
 
-// Función puente para los botones del HTML
+// Función que activan los botones
 function guardar(esFinalizado) {
-    taller.procesarFormulario(esFinalizado);
+    taller.guardarReporte(esFinalizado);
 }
