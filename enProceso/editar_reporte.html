@@ -4,26 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sertransafal - Reporte Detallado</title>
-    <link rel="stylesheet" href="reporte.css">
+    <title>Sertransafal - Editar Reporte En Proceso</title>
+    <link rel="stylesheet" href="../nuevoReportes/reporte.css">
 </head>
 
 <body>
 
     <header>
         <h1>SERTRANSAFAL</h1>
-        <div class="sub-header">
-            <span>Reporte de Vehículo</span>
-            <span id="num_reporte">No. #00124</span>
+        <div class="sub_header">
+            <span>Editando Vehículo en Taller</span>
+            <span id="num_reporte">Cargando...</span>
         </div>
     </header>
 
     <main class="contenedor_principal">
         <form id="formulario_maestro">
+            <!-- Campo oculto para saber qué ID estamos editando -->
+            <input type="hidden" id="reporte_id">
 
             <section class="tarjeta_form">
                 <h3><i class="icono">🚗</i> Datos de la Unidad</h3>
-                <div class="cuadrícula">
+                <div class="cuadricula">
                     <div class="campo">
                         <label>Fecha Entrada</label>
                         <input type="datetime-local" id="fecha_entrada">
@@ -38,11 +40,11 @@
                     </div>
                     <div class="campo">
                         <label>Vehículo</label>
-                        <input type="text" id="vehiculo_marca" placeholder="Ej: Toyota Hilux">
+                        <input type="text" id="vehiculo_marca" placeholder="Ej: Toyota">
                     </div>
                     <div class="campo">
                         <label>Modelo</label>
-                        <input type="text" id="Modelo" placeholder="Ej: Toyota Hilux">
+                        <input type="text" id="Modelo" placeholder="Ej: Hilux">
                     </div>
                     <div class="campo">
                         <label>Kilometraje Actual</label>
@@ -69,7 +71,7 @@
             <section class="tarjeta_form">
                 <h3><i class="icono">📸</i> Evidencia Fotográfica</h3>
                 <div class="zona_carga" onclick="document.getElementById('input_fotos').click()">
-                    <p>Toca aquí para subir fotos del vehículo</p>
+                    <p>Toca aquí para subir más fotos del vehículo</p>
                     <input type="file" id="input_fotos" multiple accept="image/*" style="display:none"
                         onchange="taller.previsualizarFotosExtra(event)">
                 </div>
@@ -77,20 +79,26 @@
             </section>
 
             <div class="acciones_finales">
-                <button class="btn_proceso" type="button" onclick="taller.guardarReporte(false)"> En Proceso</button>
-                <button class="btn_finalizar" type="button" onclick="taller.guardarReporte(true)"> Finalizar</button>
-                <a href="../InterfazPrincipal.html" class="btn_cancelar">❌ Salir</a>
+                <!-- Como ya está en proceso, si le da a "Guardar Cambios" sigue en proceso (false) -->
+                <button class="btn_proceso" type="button" onclick="taller.actualizarReporte(false)">💾 Guardar
+                    Avance</button>
+                <button class="btn_finalizar" type="button" onclick="taller.actualizarReporte(true)">✔️ Finalizar
+                    Reparación</button>
+                <a href="../finalizados/lista_reportes.html?filtro=proceso" class="btn_cancelar">❌ Volver</a>
             </div>
 
         </form>
     </main>
 
-    <script src="fichero_registros.js"></script>
+    <script src="../nuevoReportes/fichero_registros.js"></script>
     <script>
-        // Conectamos tus botones con el motor
-        function guardar(esFinalizado) {
-            taller.guardarReporte(esFinalizado);
-        }
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if (id) {
+                taller.cargarReporteParaEdicion(id);
+            }
+        };
     </script>
 </body>
 

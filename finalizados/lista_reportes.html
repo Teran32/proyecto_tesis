@@ -12,7 +12,9 @@
 <body>
     <header>
         <h1>SERTRANSAFAL</h1>
-        <p id="titulo_seccion">Historial de Reportes</p>
+        <div class="sub_header">
+            <span id="titulo_seccion">Cargando reportes...</span>
+        </div>
     </header>
 
     <main class="contenedor_principal">
@@ -26,9 +28,10 @@
 
     <script src="../nuevoReportes/fichero_registros.js"></script>
     <script>
+        // Apenas abra la página, que el motor dibuje la lista
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
-            const tipo = params.get('filtro'); // Esto lee si es "finalizado" o "proceso"
+            const tipo = params.get('filtro') || 'proceso';
             taller.mostrarEnLista(tipo);
         };
     </script>
