@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sertransafal - Reporte Detallado</title>
+    <link rel="stylesheet" href="reporte.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>SERTRANSAFAL</h1>
+        <div class="sub-header">
+            <span>Reporte de Vehículo</span>
+            <span id="num_reporte">No. #00124</span>
+        </div>
+    </header>
+
+    <main class="contenedor_principal">
+        <form id="formulario_maestro">
+
+            <section class="tarjeta_form">
+                <h3><i class="icono">🚗</i> Datos de la Unidad</h3>
+                <div class="cuadrícula">
+                    <div class="campo">
+                        <label>Fecha Entrada</label>
+                        <input type="datetime-local" id="fecha_entrada">
+                    </div>
+                    <div class="campo">
+                        <label>Fecha Salida</label>
+                        <input type="datetime-local" id="fecha_salida">
+                    </div>
+                    <div class="campo">
+                        <label>Placa</label>
+                        <input type="text" id="placa" placeholder="Ej: AB123CD">
+                    </div>
+                    <div class="campo">
+                        <label>Vehículo</label>
+                        <input type="text" id="vehiculo_modelo" placeholder="Ej: Toyota Hilux">
+                    </div>
+                    <div class="campo">
+                        <label>Modelo</label>
+                        <input type="text" id="vehiculo_modelo" placeholder="Ej: Toyota Hilux">
+                    </div>
+                    <div class="campo">
+                        <label>Kilometraje Actual</label>
+                        <input type="number" id="km_actual">
+                    </div>
+                </div>
+            </section>
+
+            <section class="tarjeta_form">
+                <h3><i class="icono">🔧</i> Informe Técnico</h3>
+                <label>Falla Detectada</label>
+                <textarea id="falla_detectada" rows="3"></textarea>
+
+                <label>Trabajo Realizado</label>
+                <textarea id="trabajo_realizado" rows="3"></textarea>
+
+                <label>Repuestos Utilizados</label>
+                <textarea id="repuestos" rows="3"></textarea>
+
+                <label>Pedido de Repuestos</label>
+                <textarea id="pedido_repuestos" rows="3"></textarea>
+            </section>
+
+            <section class="tarjeta_form">
+                <h3><i class="icono">📸</i> Evidencia Fotográfica</h3>
+                <div class="zona_carga" onclick="document.getElementById('input_fotos').click()">
+                    <p>Toca aquí para subir fotos del vehículo</p>
+                    <input type="file" id="input_fotos" multiple accept="image/*" style="display:none">
+                </div>
+                <div id="vista_previa_fotos" class="galeria_mini"></div>
+            </section>
+
+            <div class="acciones_finales">
+                <button type="button" class="btn_proceso" onclick="guardar(false)">🟡 En Proceso</button>
+                <button type="button" class="btn_finalizar" onclick="guardar(true)">🟢 Finalizar</button>
+                <a href="../InterfazPrincipal.html" class="btn_cancelar">❌ Salir</a>
+            </div>
+
+        </form>
+    </main>
+
+    <script src="fichero_registros.js"></script>
+</body>
+
+</html>

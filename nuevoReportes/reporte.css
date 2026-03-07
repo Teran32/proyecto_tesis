@@ -1,0 +1,210 @@
+/* --- DISEÑO PARA COMPUTADORA (Escritorio) --- */
+body {
+    background-color: #eef2f3;
+    /* Un gris muy suave, profesional */
+    margin: 0;
+    padding: 0;
+}
+
+/* --- EL TÍTULO (HEADER) --- */
+header {
+    background-color: #2c3e50;
+    /* Azul oscuro taller */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+.sub-header {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+    margin-top: 5px;
+    opacity: 0.9;
+}
+
+/* --- ESTILO DE LOS BOTONES --- */
+.btn_proceso,
+.btn_finalizar,
+.btn_cancelar {
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Botón Amarillo (En Proceso) */
+.btn_proceso {
+    background-color: #f1c40f;
+    color: #2c3e50;
+}
+
+.btn_proceso:hover {
+    background-color: #d4ac0d;
+}
+
+/* Botón Verde (Finalizar) */
+.btn_finalizar {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn_finalizar:hover {
+    background-color: #1e8449;
+}
+
+/* Botón Rojo (Cancelar/Salir) */
+.btn_cancelar {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn_cancelar:hover {
+    background-color: #c0392b;
+}
+
+.contenedor_principal {
+    max-width: 1000px;
+    /* Un poco más ancho para PC */
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Las tarjetas ahora tienen un borde sutil */
+.tarjeta_form {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+    border-top: 4px solid #3498db;
+    /* Una línea azul arriba para que se vea pro */
+}
+
+/* En la PC, los datos del vehículo se ven en dos columnas */
+.cuadrícula {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Dos columnas iguales */
+    gap: 20px;
+}
+
+/* Los cuadros de texto (textarea) se ven más grandes y limpios */
+textarea {
+    width: 96%;
+    padding: 12px;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    resize: vertical;
+    /* Para que el mecánico pueda agrandarlo si escribe mucho */
+}
+
+/* Los botones en la PC se ven uno al lado del otro */
+.acciones_finales {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* Tres columnas para los 3 botones */
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* --- DISEÑO PARA TELÉFONO (Responsive) --- */
+@media (max-width: 768px) {
+    .contenedor_principal {
+        margin: 10px auto;
+    }
+
+    /* En el celular, volvemos a una sola columna */
+    .cuadrícula {
+        grid-template-columns: 1fr;
+    }
+
+    /* Los botones se apilan uno arriba del otro para que sea fácil tocarlos */
+    .acciones_finales {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .tarjeta_form {
+        padding: 15px;
+    }
+}
+
+/* --- MEJORAS PARA EL FORMULARIO --- */
+.tarjeta_form h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 2px solid #f4f4f4;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #34495e;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    box-sizing: border-box;
+    /* Para que no se salga de la pantalla */
+}
+
+/* Zona de fotos mejorada */
+.zona_carga {
+    border: 2px dashed #3498db;
+    padding: 30px;
+    text-align: center;
+    border-radius: 12px;
+    cursor: pointer;
+    background: #f0f7ff;
+    transition: 0.3s;
+}
+
+.zona_carga:hover {
+    background: #e1effe;
+}
+
+.zona_carga p {
+    margin: 0;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.galeria_mini {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Iconos para que se vea más moderno */
+.icono {
+    margin-right: 8px;
+    font-style: normal;
+}
