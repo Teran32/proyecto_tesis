@@ -143,6 +143,89 @@ class GestionTaller {
             });
         }
     }
+
+    generarPDF() {
+        // Asegurarnos de que jsPDF este disponible
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Obtener el ID del reporte actual desde el HTML
+        const params = new URLSearchParams(window.location.search);
+        const reporteId = params.get('id');
+        const reporte = this.base_de_datos.find(r => r.id === reporteId);
+
+        if (!reporte) {
+            alert("Error: No se encontró el reporte para generar el PDF.");
+            return;
+        }
+
+        // ================= ENCABEZADO =================
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.text("REPORTE DE MANTENIMIENTO VEHICULAR", 105, 20, { align: "center" });
+
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text("Empresa: Sertransafal C.A. - Valencia, Carabobo", 105, 28, { align: "center" });
+        doc.text(`Identificador: ${reporte.id}`, 105, 34, { align: "center" });
+
+        // Linea divisoria superior
+        doc.setLineWidth(0.5);
+        doc.line(14, 38, 196, 38);
+
+        // ================= TABLA UNIFICADA =================
+        doc.autoTable({
+            startY: 45,
+            head: [['Campo', 'Información']],
+            body: [
+                ['Fecha Entrada/Salida', `${reporte.fecha_entrada ? new Date(reporte.fecha_entrada).toLocaleString() : 'N/A'} - ${reporte.fecha_salida ? new Date(reporte.fecha_salida).toLocaleString() : 'N/A'}`],
+                ['Placa del Vehículo', reporte.placa || 'N/A'],
+                ['Unidad / Modelo', `${reporte.vehiculo_marca || ''} ${reporte.modelo || ''}`],
+                ['Kilometraje Testeado', reporte.km_actual ? `${reporte.km_actual} KM` : 'N/A'],
+                ['Repuestos Suministrados', reporte.repuestos || 'N/A'],
+                ['Falla Detectada', reporte.falla_detectada || 'N/A'],
+                ['Trabajo Realizado', reporte.trabajo_realizado || 'N/A'],
+                ['Pedidos Pendientes', reporte.pedido_repuestos || 'N/A']
+            ],
+            theme: 'striped',
+            headStyles: { fillColor: [44, 62, 80], textColor: 255, fontStyle: 'bold' }, // Azul marino institucional
+            styles: { overflow: 'linebreak', fontSize: 10, cellPadding: 6 },
+            columnStyles: {
+                0: { cellWidth: 50, fontStyle: 'bold', fillColor: [248, 250, 252] }, // Gris claro
+                1: { cellWidth: 'auto' }
+            }
+        });
+
+        // ================= IMÁGENES (EVIDENCIA) =================
+        if (reporte.fotos && reporte.fotos.length > 0) {
+            doc.addPage();
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text("Anexo: Galería de Inspección", 105, 20, { align: "center" });
+
+            let yActual = 30; // Posicion Y inicial para fotos
+
+            reporte.fotos.forEach((fotoBase64, index) => {
+                if (yActual > 220) {
+                    doc.addPage();
+                    yActual = 20;
+                }
+
+                try {
+                    doc.addImage(fotoBase64, 'JPEG', 55, yActual, 100, 75);
+                } catch (e) {
+                    console.error("No se pudo adjuntar la imagen " + index);
+                }
+
+                yActual += 85;
+            });
+        }
+
+        // ================= GUARDADO =================
+        const nombreFecha = new Date().toLocaleDateString().replace(/\//g, "-");
+        const placaSegura = reporte.placa ? reporte.placa.replace(/\s+/g, '') : "Vehiculo";
+        doc.save(`Reporte_${placaSegura}_${nombreFecha}.pdf`);
+    }
 }
 
 const taller = new GestionTaller();

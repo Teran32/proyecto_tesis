@@ -72,7 +72,8 @@
             </section>
 
             <div class="acciones_finales">
-                <button class="btn_imprimir" type="button" onclick="window.print()">🖨️ Imprimir PDF</button>
+                <button class="btn_imprimir" type="button" onclick="taller.generarPDF()">🖨️ Descargar PDF
+                    Oficial</button>
                 <a href="lista_reportes.html?filtro=finalizado" class="btn_cancelar">❌ Volver</a>
                 <!-- Un tercer boton vacio para mantener la cuadricula bonita -->
                 <div></div>
@@ -80,6 +81,10 @@
 
         </form>
     </main>
+
+    <!-- Librerías para generar el PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
     <script src="../nuevoReportes/fichero_registros.js"></script>
     <script>
