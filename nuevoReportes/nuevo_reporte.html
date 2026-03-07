@@ -38,11 +38,11 @@
                     </div>
                     <div class="campo">
                         <label>Vehículo</label>
-                        <input type="text" id="vehiculo_modelo" placeholder="Ej: Toyota Hilux">
+                        <input type="text" id="vehiculo_marca" placeholder="Ej: Toyota Hilux">
                     </div>
                     <div class="campo">
                         <label>Modelo</label>
-                        <input type="text" id="vehiculo_modelo" placeholder="Ej: Toyota Hilux">
+                        <input type="text" id="Modelo" placeholder="Ej: Toyota Hilux">
                     </div>
                     <div class="campo">
                         <label>Kilometraje Actual</label>
@@ -76,8 +76,8 @@
             </section>
 
             <div class="acciones_finales">
-                <button type="button" class="btn_proceso" onclick="guardar(false)">🟡 En Proceso</button>
-                <button type="button" class="btn_finalizar" onclick="guardar(true)">🟢 Finalizar</button>
+                <button type="button" onclick="taller.guardarReporte(false)">🟡 En Proceso</button>
+                <button type="button" onclick="taller.guardarReporte(true)">🟢 Finalizar</button>
                 <a href="../InterfazPrincipal.html" class="btn_cancelar">❌ Salir</a>
             </div>
 

@@ -1,55 +1,48 @@
-// 1. La "Ficha" de cada reporte
-class Reporte {
-    constructor(datos) {
-        this.id = "REP-" + Date.now(); // Crea un número único
-        this.fecha_entrada = datos.fecha_entrada;
-        this.placa = datos.placa;
-        this.vehiculo_modelo = datos.vehiculo_modelo;
-        this.km_actual = datos.km_actual;
-        this.falla_detectada = datos.falla_detectada;
-        this.trabajo_realizado = datos.trabajo_realizado;
-        this.repuestos = datos.repuestos;
-        this.estado = datos.estado; // "En Proceso" o "Finalizado"
-    }
-}
-
-// 2. El "Administrador" del taller
 class GestionTaller {
     constructor() {
-        // Trae los reportes guardados o empieza con una lista vacía
+        // La caja donde guardamos todo
         this.base_de_datos = JSON.parse(localStorage.getItem("reportes_sertransafal")) || [];
     }
 
-    // Esta función guarda la información
     guardarReporte(esFinalizado) {
-        // Agarramos lo que escribiste en los cuadritos del HTML
+        // Sacamos la info de tus cuadros actuales
         const datos = {
-            fecha_entrada: document.getElementById('fecha_entrada').value,
+            id: "REP-" + Date.now(),
+            fecha: document.getElementById('fecha_entrada').value,
             placa: document.getElementById('placa').value,
-            vehiculo_modelo: document.getElementById('vehiculo_modelo').value,
-            km_actual: document.getElementById('km_actual').value,
-            falla_detectada: document.getElementById('falla_detectada').value,
-            trabajo_realizado: document.getElementById('trabajo_realizado').value,
-            repuestos: document.getElementById('repuestos').value,
+            vehiculo: document.getElementById('vehiculo_marca').value, // Asegúrate que este ID exista en tu HTML
+            falla: document.getElementById('falla_detectada')?.value || "Sin falla",
             estado: esFinalizado ? "Finalizado" : "En Proceso"
         };
 
-        // Creamos el reporte y lo metemos en la lista
-        const nuevoReporte = new Reporte(datos);
-        this.base_de_datos.push(nuevoReporte);
-
-        // Lo guardamos en la memoria de la PC para que no se borre
+        this.base_de_datos.push(datos);
         localStorage.setItem("reportes_sertransafal", JSON.stringify(this.base_de_datos));
 
-        alert("¡Reporte guardado con éxito como: " + nuevoReporte.estado + "!");
-        window.location.href = "index.html"; // Nos regresa al inicio
+        alert("¡Guardado! Ahora puedes verlo en la lista de " + datos.estado);
+        window.location.href = "../InterfazPrincipal.html"; // Volver al inicio
+    }
+
+    // Esta función dibuja las tarjetas en tu lista_reportes.html
+    mostrarEnLista(filtro) {
+        const contenedor = document.getElementById('cuerpo_tabla') || document.getElementById('contenedor_tarjetas');
+        if (!contenedor) return;
+
+        const filtrados = this.base_de_datos.filter(r =>
+            filtro === 'finalizado' ? r.estado === "Finalizado" : r.estado === "En Proceso"
+        );
+
+        contenedor.innerHTML = "";
+        filtrados.forEach(repo => {
+            // Aquí creamos la tarjeta "alojada"
+            contenedor.innerHTML += `
+                <div class="tarjeta_form" onclick="location.href='ver_reporte.html?id=${repo.id}'">
+                    <p><b>Placa:</b> ${repo.placa}</p>
+                    <p><b>Estado:</b> ${repo.estado}</p>
+                    <button class="btn_proceso">Ver Detalle</button>
+                </div>
+            `;
+        });
     }
 }
 
-// Creamos al administrador para que esté listo para trabajar
 const taller = new GestionTaller();
-
-// Función que activan los botones
-function guardar(esFinalizado) {
-    taller.guardarReporte(esFinalizado);
-}

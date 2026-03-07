@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sertransafal - Historial de Reportes</title>
-    <link rel="stylesheet" href="reporte.css">
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="../nuevoReportes/reporte.css">
+    <link rel="stylesheet" href="../estilos.css">
 </head>
 
 <body>
@@ -20,16 +20,16 @@
         </div>
 
         <div style="margin-top: 30px; text-align: center;">
-            <a href="index.html" class="btn_cancelar">🏠 Volver al Menú</a>
+            <a href="../InterfazPrincipal.html" class="btn_cancelar">🏠 Volver al Menú</a>
         </div>
     </main>
 
-    <script src="fichero_registros.js"></script>
+    <script src="../nuevoReportes/fichero_registros.js"></script>
     <script>
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
-            const filtro = params.get('filtro'); // 'proceso' o 'finalizado'
-            taller.renderizarHistorial(filtro);
+            const tipo = params.get('filtro'); // Esto lee si es "finalizado" o "proceso"
+            taller.mostrarEnLista(tipo);
         };
     </script>
 </body>
