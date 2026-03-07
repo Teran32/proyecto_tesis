@@ -66,6 +66,7 @@ header h1 {
 .cuadricula {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    /* 2 columnas exactas para la PC */
     gap: 20px;
 }
 

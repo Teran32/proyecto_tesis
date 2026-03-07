@@ -34,6 +34,7 @@ class GestionTaller {
             vehiculo_marca: document.getElementById('vehiculo_marca')?.value || "",
             modelo: document.getElementById('Modelo')?.value || "",
             km_actual: document.getElementById('km_actual')?.value || "",
+            proximo_km: document.getElementById('proximo_km')?.value || "",
             falla_detectada: document.getElementById('falla_detectada')?.value || "",
             trabajo_realizado: document.getElementById('trabajo_realizado')?.value || "",
             repuestos: document.getElementById('repuestos')?.value || "",
@@ -124,7 +125,7 @@ class GestionTaller {
         const ocultoId = document.getElementById('reporte_id');
         if (ocultoId) ocultoId.value = reporte.id;
 
-        const campos = ['fecha_entrada', 'fecha_salida', 'placa', 'vehiculo_marca', 'km_actual', 'falla_detectada', 'trabajo_realizado', 'repuestos', 'pedido_repuestos'];
+        const campos = ['fecha_entrada', 'fecha_salida', 'placa', 'vehiculo_marca', 'km_actual', 'proximo_km', 'falla_detectada', 'trabajo_realizado', 'repuestos', 'pedido_repuestos'];
         campos.forEach(campo => {
             if (document.getElementById(campo) && reporte[campo]) {
                 document.getElementById(campo).value = reporte[campo];
@@ -182,6 +183,7 @@ class GestionTaller {
                 ['Placa del Vehículo', reporte.placa || 'N/A'],
                 ['Unidad / Modelo', `${reporte.vehiculo_marca || ''} ${reporte.modelo || ''}`],
                 ['Kilometraje Testeado', reporte.km_actual ? `${reporte.km_actual} KM` : 'N/A'],
+                ['Próximo Kilometraje', reporte.proximo_km ? `${reporte.proximo_km} KM` : 'N/A'],
                 ['Repuestos Suministrados', reporte.repuestos || 'N/A'],
                 ['Falla Detectada', reporte.falla_detectada || 'N/A'],
                 ['Trabajo Realizado', reporte.trabajo_realizado || 'N/A'],
