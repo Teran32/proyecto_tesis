@@ -1,0 +1,220 @@
+/* --- ESTILOS EXCLUSIVOS PARA EDITAR REPORTE (EN PROCESO) --- */
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8fafc;
+    margin: 0;
+    padding: 0;
+    color: #334155;
+}
+
+header {
+    background-color: #0f172a;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.sub_header {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+    margin-top: 8px;
+    color: #94a3b8;
+}
+
+.contenedor_principal {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.tarjeta_form {
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #ca8a04;
+    /* Amarillo para En Proceso */
+}
+
+.tarjeta_form h3 {
+    margin-top: 0;
+    color: #1e293b;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.icono {
+    margin-right: 10px;
+    font-style: normal;
+    font-size: 18px;
+}
+
+.cuadricula {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #475569;
+    font-size: 13px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"],
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1e293b;
+    background-color: #ffffff;
+    transition: border-color 0.2s;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #64748b;
+    box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+    margin-bottom: 15px;
+}
+
+/* ZONA DE FOTOS */
+.zona_carga {
+    border: 2px dashed #cbd5e1;
+    padding: 30px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #f8fafc;
+    transition: all 0.2s;
+}
+
+.zona_carga:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.zona_carga p {
+    margin: 0;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.galeria_mini {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.galeria_mini img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+/* BOTONES GLOBALES PARA EN PROCESO */
+.acciones_finales {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn_proceso,
+.btn_finalizar,
+.btn_cancelar {
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+}
+
+.btn_proceso {
+    background-color: #ffffff;
+    color: #ca8a04;
+    border-color: #ca8a04;
+}
+
+.btn_proceso:hover {
+    background-color: #fefce8;
+}
+
+.btn_finalizar {
+    background-color: #16a34a;
+    color: #ffffff;
+}
+
+.btn_finalizar:hover {
+    background-color: #15803d;
+}
+
+.btn_cancelar {
+    background-color: #ffffff;
+    color: #475569;
+    border-color: #cbd5e1;
+}
+
+.btn_cancelar:hover {
+    background-color: #f1f5f9;
+}
+
+/* RESPONSIVE MÓVIL */
+@media (max-width: 768px) {
+    .cuadricula {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .acciones_finales {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .tarjeta_form {
+        padding: 15px;
+    }
+}

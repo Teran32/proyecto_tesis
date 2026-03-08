@@ -1,0 +1,194 @@
+/* --- VARIABLES GLOBALES Y RESET --- */
+:root {
+    --primary: #3498db;
+    --primary-hover: #2980b9;
+    --dark: #1a252f;
+    --success: #27ae60;
+    --success-hover: #219150;
+    --danger: #e74c3c;
+    --bg: #f4f7f6;
+    --white: #ffffff;
+    --border: #e0e0e0;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--dark);
+    display: flex;
+    padding: 20px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.gestionContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+    min-width: 60vh;
+    align-items: center;
+}
+
+.Container,
+.panel-listado {
+    width: 90%;
+}
+
+.arriba {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    height: fit-content;
+}
+
+.arriba2 {
+    padding: 20px;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arriba2 h3 {
+    font-size: 1.1rem;
+    color: var(--dark);
+    font-weight: 700;
+}
+
+.contador {
+    background: #f1f2f6;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    font-weight: 600;
+}
+
+.form {
+    padding: 25px;
+}
+
+.contenedorInput {
+    margin-bottom: 20px;
+}
+
+.contenedorInput label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--dark);
+    opacity: 0.8;
+}
+
+.inputBoton {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.form select,
+.contenedorInput input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: #fcfcfc;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.form select:focus,
+.contenedorInput input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+    outline: none;
+    background-color: #fff;
+}
+
+.btnMini {
+    height: 45px;
+    min-width: 45px;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.btnPrincipal {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.tabla {
+    overflow-x: auto;
+}
+
+.tablaModerna {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tablaModerna th {
+    padding: 15px 20px;
+    text-align: left;
+    background: #f9fafb;
+    color: #888;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid #eee;
+}
+
+.tablaModerna td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f4f4f4;
+    font-size: 0.9rem;
+}
+
+.placa-tag {
+    background: var(--dark);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.btnUltimo {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 8px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 1024px) {
+    body {
+        flex-direction: column;
+    }
+}

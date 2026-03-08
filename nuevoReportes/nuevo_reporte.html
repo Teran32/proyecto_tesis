@@ -12,8 +12,7 @@
 
     <header>
         <h1>SERTRANSAFAL</h1>
-        <div class="sub-header">
-            <span>Reporte de Vehículo</span>
+        <div class="sub_header"> <span>Reporte de Vehículo</span>
             <span id="num_reporte">No. #00124</span>
         </div>
     </header>
@@ -21,9 +20,9 @@
     <main class="contenedor_principal">
         <form id="formulario_maestro">
 
-            <section class="tarjeta_form">
+            <section class="tarjeta_form" style="background-color: rgb(167, 167, 167); padding: 20px;">
                 <h3><i class="icono">🚗</i> Datos de la Unidad</h3>
-                <div class="cuadrícula">
+                <div class="cuadricula">
                     <div class="campo">
                         <label>Fecha Entrada</label>
                         <input type="datetime-local" id="fecha_entrada">
@@ -34,7 +33,9 @@
                     </div>
                     <div class="campo">
                         <label>Placa</label>
-                        <input type="text" id="placa" placeholder="Ej: AB123CD">
+                        <select class="input" name="placa" id="placa" onblur="taller.verificarVehiculo()">
+                            <option value="">Seleccione una placa</option>
+                        </select>
                     </div>
                     <div class="campo">
                         <label>Vehículo</label>
@@ -54,7 +55,7 @@
                     </div>
                 </div>
             </section>
-
+            <hr style="border: 1px solid #3885d2; margin-top: 20px;">
             <section class="tarjeta_form">
                 <h3><i class="icono">🔧</i> Informe Técnico</h3>
                 <label>Falla Detectada</label>
@@ -70,28 +71,50 @@
                 <textarea id="pedido_repuestos" rows="3"></textarea>
             </section>
 
-            <section class="tarjeta_form">
-                <h3><i class="icono">📸</i> Evidencia Fotográfica</h3>
-                <div class="zona_carga" onclick="document.getElementById('input_fotos').click()">
-                    <p>Toca aquí para subir fotos del vehículo</p>
-                    <input type="file" id="input_fotos" multiple accept="image/*" style="display:none"
-                        onchange="taller.previsualizarFotosExtra(event)">
-                </div>
-                <div id="vista_previa_fotos" class="galeria_mini"></div>
-            </section>
+            <div class="inspeccion">
+                <h3>Inspección de Carrocería</h3>
+                <p>Seleccione el daño: Rayado (R), Abolladura (A), Roto (X)</p>
+                <div class="vehiculo">
+                    <div class="contenedorInput">
+                        <label>Galería de Inspección de la Unidad</label>
+                        <div class=" colocarFotos" id="zonaFoto"
+                            onclick="document.getElementById('inputFotos').click()">
+                            <div class="fotico">📸</div>
+                            <p><strong>Haz clic para subir</strong> o arrastra las fotos aquí</p>
+                            <span>Formatos aceptados: JPG, PNG (Máx. 5MB)</span>
+                        </div>
 
-            <div class="acciones_finales">
-                <button class="btn_proceso" type="button" onclick="taller.guardarReporte(false)"> En Proceso</button>
-                <button class="btn_finalizar" type="button" onclick="taller.guardarReporte(true)"> Finalizar</button>
-                <a href="../InterfazPrincipal.html" class="btn_cancelar">❌ Salir</a>
-            </div>
+                        <input type="file" id="inputFotos" accept="image/*" multiple style="display: none;"
+                            onchange="manejarFotos(event)">
+
+                        <div class="carruselFotos" id="galeriaDinamica">
+                            <div class="noFotos" id="placeholderTexto">
+                                <p>Las fotos que añadas aparecerán aquí para revisión</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="modalVisor" class="modal-foto" onclick="cerrarVisor()">
+                        <span class="cerrar-modal">&times;</span>
+                        <img id="imgGrande" src="">
+                    </div>
+                </div>
+
+                <div class="acciones_finales">
+                    <button class="btn_proceso" type="button" onclick="taller.guardarReporte(false)"> En
+                        Proceso</button>
+                    <button class="btn_finalizar" type="button" onclick="taller.guardarReporte(true)">
+                        Finalizar</button>
+                    <a href="../InterfazPrincipal.html" class="btn_cancelar">❌ Salir</a>
+                </div>
 
         </form>
     </main>
 
     <script src="fichero_registros.js"></script>
+    <script src="carrusel.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Conectamos tus botones con el motor
         function guardar(esFinalizado) {
             taller.guardarReporte(esFinalizado);
         }

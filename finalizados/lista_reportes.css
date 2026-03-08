@@ -1,0 +1,82 @@
+/* --- ESTILOS EXCLUSIVOS PARA LISTA DE REPORTES --- */
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8fafc;
+    margin: 0;
+    padding: 0;
+    color: #334155;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    background-color: #0f172a;
+    color: #ffffff;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.sub_header {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+    margin-top: 8px;
+    color: #94a3b8;
+}
+
+.contenedor_principal {
+    max-width: 900px;
+    width: 95%;
+    margin: 30px auto;
+}
+
+.cuadricula {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    /* Tarjetas adaptables automaticamente */
+    gap: 20px;
+}
+
+.tarjeta_form {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #3498db;
+    /* Azul institucional basico */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tarjeta_form:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+}
+
+.btn_cancelar {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.btn_cancelar:hover {
+    background-color: #f1f5f9;
+}
