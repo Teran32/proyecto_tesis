@@ -19,6 +19,30 @@
     font-family: 'Segoe UI', Roboto, sans-serif;
 }
 
+.top-nav {
+    padding: 20px 5%;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.btnVolver {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btnVolver:hover {
+    background: #f0f7ff;
+    transform: translateX(-5px);
+}
+
 body {
     background-color: var(--bg);
     color: var(--dark);

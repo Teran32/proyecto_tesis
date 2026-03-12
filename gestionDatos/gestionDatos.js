@@ -1,58 +1,94 @@
-async function abrirModal(tipo) {
-    // 1. Definimos textos dinámicos según el botón presionado
+async function agregarMaestro(tipo) {
     const titulo = tipo === 'marca' ? 'Añadir Nueva Marca' : 'Añadir Nuevo Modelo';
     const placeholder = tipo === 'marca' ? 'Ej: Toyota' : 'Ej: Hilux';
+    const idMarcaPadre = document.getElementById('marcaVehiculo').value;
 
-    // 2. Lanzamos la alerta de SweetAlert2
+    // Si es modelo, necesitamos saber a qué marca pertenece
+    if (tipo === 'modelo' && !idMarcaPadre) {
+        Swal.fire('Error', 'Debes seleccionar una Marca primero', 'warning');
+        return;
+    }
+
     const { value: nuevoValor } = await Swal.fire({
-        title: `<span style="color: #1a252f; font-family: 'Segoe UI', sans-serif;">${titulo}</span>`,
+        title: `<span style="color: #1a252f;">${titulo}</span>`,
         input: 'text',
         inputPlaceholder: placeholder,
         showCancelButton: true,
         confirmButtonText: 'Guardar',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#3498db', // Color --primary de tu CSS
-        cancelButtonColor: '#95a5a6',
-        background: '#ffffff',
-        borderRadius: '16px',
-        inputAttributes: {
-            autocapitalize: 'words'
-        },
-        // Validación para que no guarden campos vacíos
+        confirmButtonColor: '#3498db',
         inputValidator: (value) => {
-            if (!value) {
-                return '¡Debes escribir un nombre!';
-            }
+            if (!value) return '¡Debes escribir un nombre!';
         }
     });
 
-    // 3. Si el usuario escribió algo y dio a "Guardar"
     if (nuevoValor) {
-        // Mostramos una alerta de éxito
-        Swal.fire({
-            title: '¡Registrado!',
-            text: `${nuevoValor} se agregó a la lista de ${tipo}s.`,
-            icon: 'success',
-            confirmButtonColor: '#27ae60', // Color --success de tu CSS
-            timer: 2000,
-            showConfirmButton: false
-        });
+        const datos = new FormData();
+        datos.append('tipo', tipo);
+        datos.append('nombre', nuevoValor);
+        datos.append('id_marca_padre', idMarcaPadre);
 
-        // 4. Actualizamos el SELECT correspondiente automáticamente
-        const idSelect = tipo === 'marca' ? 'marcaVehiculo' : 'modeloVehiculo';
-        const selectElement = document.getElementById(idSelect); //
+        fetch('guardar_maestro_rapido.php', {
+            method: 'POST',
+            body: datos
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: '¡Registrado!',
+                        text: `${nuevoValor} se guardó en la base de datos.`,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
 
-        const nuevaOpcion = document.createElement('option');
-        nuevaOpcion.value = nuevoValor.toLowerCase();
-        nuevaOpcion.text = nuevoValor;
-        nuevaOpcion.selected = true; // Lo deja seleccionado de una vez
+                    // Actualizar el SELECT con el ID real que devolvió la base de datos
+                    const idSelect = tipo === 'marca' ? 'marcaVehiculo' : 'modeloVehiculo';
+                    const selectElement = document.getElementById(idSelect);
 
-        selectElement.add(nuevaOpcion);
+                    const nuevaOpcion = document.createElement('option');
+                    nuevaOpcion.value = data.id_nuevo;
+                    nuevaOpcion.text = nuevoValor;
+                    nuevaOpcion.selected = true;
+                    selectElement.add(nuevaOpcion);
+
+                    if (tipo === 'marca') {
+                        verificarMarca(data.id_nuevo);
+                    }
+                } else {
+                    Swal.fire('Error', data.error || 'No se pudo guardar', 'error');
+                }
+            });
     }
 }
 
+// Función de eliminación usando SweetAlert2 (más profesional para tu tesis)
 function eliminarChofer(id) {
-    if (confirm("¿Estás seguro de eliminar a este chofer?")) {
-        window.location.href = `eliminar_chofer.php?id=${id}`;
+    Swal.fire({
+        title: '¿Eliminar chofer?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = `eliminar_chofer.php?id_chofer=${id}`;
+        }
+    });
+}
+function verificarMarca(idMarca) {
+    const selectModelo = document.getElementById('modeloVehiculo');
+    if (idMarca) {
+        selectModelo.disabled = false;
+        // Petición AJAX para obtener modelos de esa marca
+        fetch(`obtener_modelos.php?id_marca=${idMarca}`)
+            .then(res => res.text())
+            .then(html => {
+                selectModelo.innerHTML = html;
+            });
+    } else {
+        selectModelo.disabled = true;
+        selectModelo.innerHTML = '<option value="">Selecciona marca primero...</option>';
     }
 }

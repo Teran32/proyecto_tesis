@@ -21,7 +21,7 @@
         </div>
 
         <div style="margin-top: 30px; text-align: center;">
-            <a href="../InterfazPrincipal.html" class="btn_cancelar">🏠 Volver al Menú</a>
+            <a href="../InterfazPrincipal.php" class="btn_cancelar">🏠 Volver al Menú</a>
         </div>
     </main>
 

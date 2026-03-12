@@ -78,8 +78,8 @@
             <div class="acciones_finales">
                 <button class="btn_imprimir" type="button" onclick="taller.generarPDF()">🖨️ Descargar PDF
                     Oficial</button>
-                <a href="lista_reportes.html?filtro=finalizado" class="btn_cancelar">❌ Volver</a>
-                <!-- Un tercer boton vacio para mantener la cuadricula bonita -->
+                <a href="lista_reportes.php?filtro=finalizado" class="btn_cancelar">❌ Volver</a>
+                <!-- Un tercer div vacio para mantener la cuadricula bonita -->
                 <div></div>
             </div>
 

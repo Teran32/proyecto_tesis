@@ -17,23 +17,22 @@
     </header>
 
     <div class="contenedor_menu">
-        <a href="nuevoReportes/nuevo_reporte.html" class="caja_opcion">
+        <a href="nuevoReportes/nuevo_reporte.php" class="caja_opcion">
             <div>➕</div>
             Nuevo Reporte
         </a>
-        <a href="finalizados/lista_reportes.html?filtro=proceso" class="caja_opcion">
+        <a href="finalizados/lista_reportes.php?filtro=proceso" class="caja_opcion">
             <div>🛠️</div>
             En Proceso
         </a>
 
-        <a href="finalizados/lista_reportes.html?filtro=finalizado" class="caja_opcion">
+        <a href="finalizados/lista_reportes.php?filtro=finalizado" class="caja_opcion">
             <div>✅</div>
             Finalizados
         </a>
-        <a href="gestionDatos/GestionDatos.php" class="caja_opcion" style="opacity: 0.7; border-style: dashed;">
+        <a href="gestionDatos/GestionDatos.php" class="caja_opcion">
             <div>⚙️</div>
             Gestión de Datos
-            <small style="display:block; font-size:10px;">(Próximamente)</small>
         </a>
     </div>
 

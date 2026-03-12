@@ -88,7 +88,7 @@
                     Avance</button>
                 <button class="btn_finalizar" type="button" onclick="taller.actualizarReporte(true)">✔️ Finalizar
                     Reparación</button>
-                <a href="../finalizados/lista_reportes.html?filtro=proceso" class="btn_cancelar">❌ Volver</a>
+                <a href="../finalizados/lista_reportes.php?filtro=proceso" class="btn_cancelar">❌ Volver</a>
             </div>
 
         </form>

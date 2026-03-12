@@ -1,15 +1,13 @@
 <?php
 include 'conexion.php';
-$marca_id = $_GET['marca_id'] ?? null;
+$id_marca = $_GET['id_marca'];
 
-if ($marca_id) {
-    $stmt = $pdo->prepare("SELECT id, nombre FROM modelos WHERE marca_id = ? ORDER BY nombre ASC");
-    $stmt->execute([$marca_id]);
-    $modelos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare("SELECT id_modelos, modelos FROM modelos WHERE id_marcas = ? ORDER BY modelos ASC");
+$stmt->execute([$id_marca]);
+$modelos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    echo '<option value="">Seleccionar Modelo...</option>';
-    foreach ($modelos as $m) {
-        echo "<option value='{$m['id']}'>" . htmlspecialchars($m['nombre']) . "</option>";
-    }
+echo '<option value="">Seleccionar Modelo...</option>';
+foreach ($modelos as $m) {
+    echo "<option value='{$m['id_modelos']}'>{$m['modelos']}</option>";
 }
 ?>

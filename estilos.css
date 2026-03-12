@@ -1,6 +1,9 @@
 body {
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f8fafc;
+    background-image: url('imagenes/fondo3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     /* Gris muy claro y profesional */
     color: #334155;
     /* Texto gris oscuro */
