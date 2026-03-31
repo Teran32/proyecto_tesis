@@ -126,12 +126,11 @@ $unidades = $pdo->query($sqlUnidades)->fetchAll(PDO::FETCH_ASSOC);
                 <div class="contenedor-tabla">
                     <table class="tabla-estilizada display" id="tablaChoferes">
                         <thead>
-                            <tr><th>ID</th><th>Nombre</th><th>Acciones</th></tr>
+                            <tr><th>Nombre</th><th>Acciones</th></tr>
                         </thead>
                         <tbody>
                             <?php foreach($listaChoferes as $c): ?>
                             <tr>
-                                <td>#<?= $c['id_chofer'] ?></td>
                                 <td><?= $c['chofer'] ?></td>
                                 <td class="celda-acciones">
                                     <button class="btn-accion editar" onclick="modificar('chofer', <?= $c['id_chofer'] ?>)">✏️</button>
