@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sertransafal - Reporte Oficial (PDF)</title>
+    <link rel="stylesheet" href="ver_reporte.css">
+</head>
+
+<body class="vista_solo_lectura">
+
+    <header>
+        <h1>SERTRANSAFAL</h1>
+        <div class="sub_header">
+            <span>Reporte Oficial de Mantenimiento</span>
+            <span id="num_reporte">Cargando...</span>
+        </div>
+    </header>
+
+    <main class="contenedor_principal">
+        <form id="formulario_maestro">
+
+            <section class="tarjeta_form">
+                <h3><i class="icono">🚗</i> Datos de la Unidad</h3>
+                <div class="cuadricula">
+                    <div class="campo">
+                        <label>Fecha Entrada</label>
+                        <input type="datetime-local" id="fecha_entrada" readonly>
+                    </div>
+                    <div class="campo">
+                        <label>Fecha Salida</label>
+                        <input type="datetime-local" id="fecha_salida" readonly>
+                    </div>
+                    <div class="campo">
+                        <label>Placa</label>
+                        <input type="text" id="placa" readonly>
+                    </div>
+                    <div class="campo">
+                        <label>Vehículo</label>
+                        <input type="text" id="vehiculo_marca" readonly>
+                    </div>
+                    <div class="campo">
+                        <label>Modelo</label>
+                        <input type="text" id="Modelo" readonly>
+                    </div>
+                    <div class="campo">
+                        <label>Kilometraje Testeado</label>
+                        <input type="number" id="km_actual" readonly>
+                    </div>
+                    <div class="campo">
+                        <label>Próximo Kilometraje</label>
+                        <input type="number" id="proximo_km" readonly>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tarjeta_form">
+                <h3><i class="icono">🔧</i> Informe Técnico</h3>
+                <label>Falla Detectada</label>
+                <textarea id="falla_detectada" rows="3" readonly></textarea>
+
+                <label>Trabajo Realizado</label>
+                <textarea id="trabajo_realizado" rows="3" readonly></textarea>
+
+                <label>Repuestos Utilizados</label>
+                <textarea id="repuestos" rows="3" readonly></textarea>
+
+                <label>Pedido de Repuestos</label>
+                <textarea id="pedido_repuestos" rows="3" readonly></textarea>
+            </section>
+
+            <section class="tarjeta_form">
+                <h3><i class="icono">📸</i> Evidencia Fotográfica</h3>
+                <div id="vista_previa_fotos" class="galeria_mini"></div>
+            </section>
+
+            <div class="acciones_finales">
+                <button class="btn_imprimir" type="button" onclick="taller.generarPDF()">🖨️ Descargar PDF
+                    Oficial</button>
+                <a href="lista_reportes.php?filtro=finalizado" class="btn_cancelar">❌ Volver</a>
+                <!-- Un tercer div vacio para mantener la cuadricula bonita -->
+                <div></div>
+            </div>
+
+        </form>
+    </main>
+
+    <!-- Librerías para generar el PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="../nuevoReportes/fichero_registros.js"></script>
+    <script>
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if (id) {
+                taller.cargarReporteParaEdicion(id); // Reutilizamos la funcion de carga
+            }
+        };
+    </script>
+</body>
+
+</html>

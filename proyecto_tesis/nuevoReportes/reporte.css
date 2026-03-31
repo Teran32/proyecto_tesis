@@ -1,0 +1,404 @@
+/* Fuente moderna e Interfaz limpia */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)),
+        url('../imagenes/fondo3.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #1e293b;
+}
+
+header {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    letter-spacing: 3px;
+    color: #60a5fa;
+}
+
+.sub_header {
+    margin-top: 5px;
+    font-size: 1rem;
+    opacity: 0.9;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+/* Contenedor del Formulario */
+.contenedor_principal {
+    width: 100%;
+    max-width: 950px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+/* Secciones del Formulario */
+.tarjeta_form {
+    margin-bottom: 30px;
+    border: 1px solid #e2e8f0;
+    padding: 25px !important;
+    /* Mantenemos el override para tu inline style */
+    border-radius: 12px;
+    background-color: #f8fafc !important;
+}
+
+.tarjeta_form h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    color: #1e293b;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Grid de Datos de la Unidad */
+.cuadricula {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    color: #475569;
+}
+
+/* Estilo de Inputs y Selects */
+.input,
+textarea {
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* Estilo para campos Readonly (Marca/Modelo) */
+input[readonly] {
+    background-color: #f1f5f9 !important;
+    cursor: not-allowed;
+    border-style: dashed;
+}
+
+textarea {
+    width: 100%;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+/* Botones de Acción */
+.acciones_finales {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 25px;
+}
+
+.btn_finalizar,
+.btn_cancelar {
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Botón Guardar (Azul) */
+button[value="finalizado"] {
+    background-color: #2563eb;
+    color: white;
+}
+
+button[value="finalizado"]:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* Botón En Proceso (Gris azulado) */
+button[value="en_proceso"] {
+    background-color: #64748b;
+    color: white;
+}
+
+button[value="en_proceso"]:hover {
+    background-color: #475569;
+}
+
+/* Botón Salir/Cancelar */
+.btn_cancelar {
+    background-color: #ef4444;
+    color: white;
+}
+
+.btn_cancelar:hover {
+    background-color: #dc2626;
+}
+
+/* Animación de entrada */
+.contenedor_principal {
+    animation: slideUp 0.5s ease-out;
+}
+
+.ayuda {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    padding: 2px;
+    width: 100%;
+    box-sizing: border-box;
+    border: solid 2px rgb(196, 196, 196);
+    border-radius: 15px;
+    margin-top: 2px;
+}
+
+.ayudaa {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(241, 240, 240, 0.83);
+    justify-content: space-between;
+}
+
+.ayudaa span {
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+.ayudaa select {
+    border-radius: 2px;
+    border: 1px solid #475569;
+    background-color: #1e293b;
+    color: white;
+
+}
+
+.ayudaa select:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 5px rgba(96, 165, 250, 0.5);
+}
+
+@media (max-width: 500px) {
+    .ayuda {
+        grid-template-columns: 1fr;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/*loasljdoasndfasdnakjsdnasdmasdjnf empieza el carrusel*/
+
+.colocarFotos {
+    width: 99%;
+    padding: 10px;
+    border: 2px dashed #cbd5e0;
+    border-radius: 16px;
+    background: #f8fafc;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 6px;
+}
+
+.colocarFotos:hover {
+    border-color: var(--primary);
+    background: #f1f7ff;
+}
+
+.fotico {
+    font-size: 2.5rem;
+    margin-bottom: 1px;
+}
+
+.colocarFotos p {
+    color: #4a5568;
+    font-size: 1rem;
+}
+
+.colocarFotos span {
+    color: #a0aec0;
+    font-size: 0.8rem;
+}
+
+.carruselFotos {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 20px;
+    padding: 15px 10px;
+    min-height: 220px;
+    width: 100%;
+    align-items: center;
+    scroll-behavior: smooth;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 14px;
+}
+
+.carruselFotos::-webkit-scrollbar {
+    height: 8px;
+}
+
+.carruselFotos::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.carruselFotos::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+.carruselFotos::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover);
+}
+
+.foto-card {
+    flex: 0 0 auto;
+    position: relative;
+    width: 180px;
+    height: 180px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.foto-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: zoom-in;
+}
+
+.foto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Botón para eliminar */
+.btn-borrar-pro {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(231, 76, 60, 0.9);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    backdrop-filter: blur(4px);
+}
+
+.noFotos {
+
+    width: 92%;
+    text-align: center;
+    color: #a0aec0;
+    font-style: italic;
+    border: 1px solid #edf2f7;
+    padding: 40px;
+    border-radius: 12px;
+}
+
+.modal-foto {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.95);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-foto img {
+    max-width: 85%;
+    max-height: 85%;
+    border-radius: 12px;
+    border: 3px solid white;
+}
+
+.zona_carga {
+    border: 2px dashed #cbd5e1;
+    padding: 30px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #f8fafc;
+    transition: all 0.2s;
+}
+
+.zona_carga:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.zona_carga p {
+    margin: 0;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/*loasljdoasndfoqsdnfpoasdjnf termina el carrusel */
