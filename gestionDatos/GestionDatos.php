@@ -23,138 +23,130 @@ $unidades = $pdo->query($sqlUnidades)->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sertransfal - Gestión Maestra</title>
+    <title>Sertransfal - Gestión de datos</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="assets/css/gestionDatos.css">
 </head>
-<body >
-    <div class="top-nav">
-        <a href="../InterfazPrincipal.php" class="btnVolver">← Volver al Menú</a>
-    </div>
+<body>
+    <nav class="barra-superior">
+        <a href="../InterfazPrincipal.php" class="enlace-volver">← Volver al Menú Principal</a>
+    </nav>
 
-    <div class="main-wrapper">
+    <div class="envoltura-global">
+        <header class="titulo-seccion">
+            <h1>Panel de Gestión de Datos</h1>
+            <p>Administración centralizada de unidades y personal operativo.</p>
+        </header>
 
-
-    <div class="gestionContainer">
-        <aside class="Container">
-            <div class="arriba">
-                <div class="arriba2">
-                    <i class="icon">🚗</i>
-                    <h3>Registro de Unidad</h3>
+        <section class="cuadricula-gestion">
+            <aside class="tarjeta-registro">
+                <div class="tarjeta-cabecera">
+                    <span class="emoji">🚗</span>
+                    <h3>Nueva Unidad</h3>
                 </div>
-
-                <form id="formUnidad" action="api/guardar_unidad.php" method="POST" class="form">
-                    <div class="contenedorInput">
-                        <label>Marca</label>
-                        <div class="inputBoton">
+                <form id="formUnidad" action="api/guardar_unidad.php" method="POST" class="formulario">
+                    <div class="grupo-campo">
+                        <label>Marca Vehicular</label>
+                        <div class="entrada-combinada">
                             <select id="marcaVehiculo" name="id_marca" onchange="verificarMarca(this.value)" required>
                                 <option value="">Seleccionar...</option>
                                 <?php foreach($marcas as $m): ?>
                                     <option value="<?= $m['id_marcas'] ?>"><?= $m['marcas'] ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <button type="button" class="btnMini" onclick="agregarMaestro('marca')">+</button>
+                            <button type="button" class="btn-pequeno" onclick="agregarMaestro('marca')">+</button>
                         </div>
                     </div>
 
-                    <div class="contenedorInput">
+                    <div class="grupo-campo">
                         <label>Modelo</label>
-                        <div class="inputBoton">
+                        <div class="entrada-combinada">
                             <select id="modeloVehiculo" name="id_modelo" disabled required>
-                                <option value="">Selecciona marca primero...</option>
+                                <option value="">Selecciona marca...</option>
                             </select>
-                            <button type="button" class="btnMini" onclick="agregarMaestro('modelo')">+</button>
+                            <button type="button" class="btn-pequeno" onclick="agregarMaestro('modelo')">+</button>
                         </div>
                     </div>
 
-                    <div class="contenedorInput">
-                        <label>Número de Placa</label>
+                    <div class="grupo-campo">
+                        <label>Placa</label>
                         <input type="text" name="placa" placeholder="EJ: AB123CD" required>
                     </div>
-                    <button type="submit" class="btnPrincipal">Vincular Unidad</button>
+                    <button type="submit" class="btn-enviar">Vincular Vehículo</button>
                 </form>
-            </div>
-        </aside>
+            </aside>
 
-        <main class="panel-listado">
-            <div class="arriba">
-                <div class="arriba2">
-                    <h3>Unidades vehiculares</h3>
-                    <span class="contador"><?= count($unidades) ?> Registros</span>
+            <main class="tarjeta-listado">
+                <div class="tarjeta-cabecera">
+                    <h3>Unidades Activas</h3>
+                    <span class="insignia-conteo"><?= count($unidades) ?> Registros</span>
                 </div>
-                <div class="tabla">
-                    <table class="tablaModerna display" id="tablaUnidades">
+                <div class="contenedor-tabla">
+                    <table class="tabla-estilizada display" id="tablaUnidades">
                         <thead>
                             <tr><th>Placa</th><th>Vehículo</th><th>Acciones</th></tr>
                         </thead>
                         <tbody>
                             <?php foreach($unidades as $u): ?>
                             <tr>
-                                <td><span class="placa-tag"><?= $u['placas'] ?></span></td>
+                                <td><span class="placa-estilo"><?= $u['placas'] ?></span></td>
                                 <td><?= $u['marcas'] . " " . $u['modelos'] ?></td>
-                                <td>
-                                    <button class="btnUltimo editar" onclick="modificar('vehiculo', <?= $u['id_placas'] ?>)">✏️</button>
-                                    <button class="btnUltimo borrar" onclick="eliminar('vehiculo', <?= $u['id_placas'] ?>)">🗑️</button>
+                                <td class="celda-acciones">
+                                    <button class="btn-accion editar" onclick="modificar('vehiculo', <?= $u['id_placas'] ?>)">✏️</button>
+                                    <button class="btn-accion borrar" onclick="eliminar('vehiculo', <?= $u['id_placas'] ?>)">🗑️</button>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </main>
-    </div>
-</div>
+            </main>
+        </section>
 
-
-
-    <div class="gestionContainer">
-        <aside class="Container">
-            <div class="arriba">
-                <div class="arriba2">
-                    <i class="icon">👤</i>
-                    <h3>Registro de Chofer</h3>
+        <section class="cuadricula-gestion">
+            <aside class="tarjeta-registro">
+                <div class="tarjeta-cabecera">
+                    <span class="emoji">👤</span>
+                    <h3>Nuevo Chofer</h3>
                 </div>
-                <form action="api/guardar_chofer.php" method="POST" class="form">
-                    <div class="contenedorInput">
-                        <label>Nombre del Chofer</label>
+                <form action="api/guardar_chofer.php" method="POST" class="formulario">
+                    <div class="grupo-campo">
+                        <label>Nombre Completo</label>
                         <input type="text" name="chofer" placeholder="Nombre y Apellido" required>
                     </div>
-                    <button type="submit" class="btnPrincipal">Registrar Personal</button>
+                    <button type="submit" class="btn-enviar">Registrar Personal</button>
                 </form>
-            </div>
-        </aside>
+            </aside>
 
-        <main class="panel-listado">
-            <div class="arriba">
-                <div class="arriba2">
-                    <h3>Personal Registrado</h3>
-                    <span class="contador"><?= count($listaChoferes) ?> Choferes</span>
+            <main class="tarjeta-listado">
+                <div class="tarjeta-cabecera">
+                    <h3>Personal en Nómina</h3>
+                    <span class="insignia-conteo"><?= count($listaChoferes) ?> Choferes</span>
                 </div>
-                <div class="tabla">
-                    <table class="tablaModerna display" id="tablaChoferes">
+                <div class="contenedor-tabla">
+                    <table class="tabla-estilizada display" id="tablaChoferes">
                         <thead>
-                            <tr>
-                                <th>Nombre Completo</th>
-                                <th>Acciones</th>
-                            </tr>
+                            <tr><th>ID</th><th>Nombre</th><th>Acciones</th></tr>
                         </thead>
                         <tbody>
                             <?php foreach($listaChoferes as $c): ?>
                             <tr>
+                                <td>#<?= $c['id_chofer'] ?></td>
                                 <td><?= $c['chofer'] ?></td>
-                                <td>
-                                    <button class="btnUltimo editar" onclick="modificar('chofer', <?= $c['id_chofer'] ?>)">✏️</button>
-                                    <button class="btnUltimo borrar" onclick="eliminar('chofer', <?= $c['id_chofer'] ?>)">🗑️</button>
+                                <td class="celda-acciones">
+                                    <button class="btn-accion editar" onclick="modificar('chofer', <?= $c['id_chofer'] ?>)">✏️</button>
+                                    <button class="btn-accion borrar" onclick="eliminar('chofer', <?= $c['id_chofer'] ?>)">🗑️</button>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </main>
+            </main>
+        </section>
     </div>
+    </body>
+</html>
 
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
@@ -224,5 +216,3 @@ $unidades = $pdo->query($sqlUnidades)->fetchAll(PDO::FETCH_ASSOC);
             });
         }
     </script>
-</body>
-</html>
