@@ -401,6 +401,7 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
     </main>
 
     <script src="../nuevoReportes/carrusel.js"></script>
+
     <script>
         function validarEnvio(e) {
             const boton = document.activeElement.value;
@@ -421,7 +422,7 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
                 return;
             }
 
-            fetch(`../nuevoReportes/buscar_vehiculo_datos.php?id_placa=${idPlaca}`)
+            fetch(`../nuevoReportes/buscar_vehiculo_datos.php?id_placa=${idPlaca}`) 
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {

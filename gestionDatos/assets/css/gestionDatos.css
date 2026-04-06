@@ -1,4 +1,4 @@
-/* --- Variables de Diseño --- */
+
 :root {
     --azul-primario: #2563eb;
     --azul-oscuro: #1e293b;
@@ -112,7 +112,7 @@ input, select {
 }
 
 .tabla-estilizada { width: 100%; border-collapse: collapse; }
-.tabla-estilizada th { text-align: left; padding: 1rem; background: #f8fafc; color: var(--texto-suave); font-size: 0.75rem; text-transform: uppercase; }
+.tabla-estilizada th { text-align: left; padding: 0rem; background: #f8fafc; color: var(--texto-suave); font-size: 0.75rem; text-transform: uppercase; }
 .tabla-estilizada td { padding: 1rem; border-bottom: 1px solid #f1f5f9; }
 
 .placa-estilo {
@@ -140,5 +140,10 @@ input, select {
     border-radius: 6px;
     cursor: pointer;
 }
-.btn-accion.editar { background: #e0f2fe; color: #0369a1; }
-.btn-accion.borrar { background: #fee2e2; color: #b91c1c; }
+.btn-accion.editar {
+    background: #e0f2fe; 
+    color: #0369a1; }
+
+.btn-accion.borrar { 
+    background: #fee2e2;
+    color: #b91c1c; }

@@ -1,25 +1,36 @@
 <?php
 include '../gestionDatos/conexion.php';
+header('Content-Type: application/json');
 
-$id_placa = $_GET['id_placa'];
+$tipo = $_GET['tipo'] ?? 'placa';
+$valor = $_GET['valor'] ?? '';
 
-// JOIN entre placas, modelos y marcas
-$sql = "SELECT ma.marcas, mo.modelos 
-        FROM placas p
-        JOIN modelos mo ON p.id_modelos = mo.id_modelos
-        JOIN marcas ma ON mo.id_marcas = ma.id_marcas
-        WHERE p.id_placas = ?";
+try {
+    // La consulta es la misma, solo cambia el WHERE dinámicamente
+    $columna = ($tipo == 'placa') ? 'p.id_placas' : (($tipo == 'marca') ? 'ma.id_marcas' : 'mo.id_modelos');
+    
+    $sql = "SELECT p.id_placas, ma.id_marcas, mo.id_modelos, ma.marcas, mo.modelos 
+            FROM placas p
+            JOIN modelos mo ON p.id_modelos = mo.id_modelos
+            JOIN marcas ma ON mo.id_marcas = ma.id_marcas
+            WHERE $columna = ? LIMIT 1";
 
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$id_placa]);
-$datos = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$valor]);
+    $v = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($datos) {
-    echo json_encode([
-        'success' => true,
-        'marca' => $datos['marcas'],
-        'modelo' => $datos['modelos']
-    ]);
-} else {
-    echo json_encode(['success' => false]);
+    if ($v) {
+        echo json_encode([
+            'success' => true,
+            'id_placa' => $v['id_placas'],
+            'id_marca' => $v['id_marcas'],
+            'id_modelo' => $v['id_modelos'],
+            'nombre_marca' => $v['marcas'],
+            'nombre_modelo' => $v['modelos']
+        ]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }

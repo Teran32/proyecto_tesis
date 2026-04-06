@@ -7,10 +7,9 @@ try {
 
     // 3. Contar vehículos "Finalizados" en el mes actual (estado = 1)
     // Usamos MONTH(CURRENT_DATE) para que solo cuente los de este mes
-    $stmtFinalizado = $pdo->query("SELECT COUNT(*) FROM reportes 
-                                   WHERE estado = 1 
-                                   AND MONTH(fecha_entrada) = MONTH(CURRENT_DATE()) 
-                                   AND YEAR(fecha_entrada) = YEAR(CURRENT_DATE())");
+    $stmtFinalizado = $pdo->query("SELECT COUNT(*) FROM reportes WHERE estado = 1 
+                                AND MONTH(fecha_entrada) = MONTH(CURRENT_DATE()) 
+                                AND YEAR(fecha_entrada) = YEAR(CURRENT_DATE())");
     $totalFinalizado = $stmtFinalizado->fetchColumn();
 
 } catch (PDOException $e) {
@@ -73,7 +72,7 @@ try {
             </span>
             <span class="pildora_estado">
                 <span class="punto verde"></span>
-                Listos: <b id="total_finalizado">
+                Listos en el mes: <b id="total_finalizado">
                     <?= $totalFinalizado ?>
                 </b>
             </span>

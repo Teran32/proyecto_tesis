@@ -26,6 +26,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pedidos = isset($_POST['pedidos']) ? $_POST['pedidos'] : null;
     $correlativo = isset($_POST['correlativo']) ? $_POST['correlativo'] : null;
 
+
+    $sql_check = "SELECT COUNT(*) FROM reportes WHERE id = ? AND estado = 0";
+$stmt_check = $pdo->prepare($sql_check);
+$stmt_check->execute([$id_placa]);
+$conteo = $stmt_check->fetchColumn();
+
+if ($conteo > 0) {
+    header("Location: nuevo_reporte.php?status=error_duplicado");
+    exit();
+}
+
+
     try {
         $sql = "INSERT INTO reportes (
                     id_placa, id_chofer, id_tipo_trabajo, fecha_entrada, 

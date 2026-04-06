@@ -3,13 +3,18 @@ include '../gestionDatos/conexion.php';
 include 'correlativo_año.php';
 
 $placas = $pdo->query("SELECT id_placas, placas FROM placas")->fetchAll(PDO::FETCH_ASSOC);
+$marcas = $pdo->query("SELECT id_marcas, marcas FROM marcas")->fetchAll(PDO::FETCH_ASSOC);
+$modelos = $pdo->query("SELECT id_modelos, modelos FROM modelos")->fetchAll(PDO::FETCH_ASSOC);
 $choferes = $pdo->query("SELECT id_chofer, chofer FROM choferes")->fetchAll(PDO::FETCH_ASSOC);
 $tipos = $pdo->query("SELECT id_tipo_trabajo, tipo_trabajo FROM tipo_trabajo")->fetchAll(PDO::FETCH_ASSOC);
 
 $fecha_hoy = date('Y-m-d\TH:i');
-
 $nuevo_codigo = generarCorrelativo($pdo); 
 ?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -32,7 +37,14 @@ $nuevo_codigo = generarCorrelativo($pdo);
     </header>
 
     <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
-        <script>alert("¡Reporte Guardado Exitosamente!");</script>
+        <script>
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Reporte guardado exitosamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
     <?php endif; ?>
 
     <main class="contenedor_principal">
@@ -43,7 +55,7 @@ $nuevo_codigo = generarCorrelativo($pdo);
                 <div class="cuadricula">
                     <div class="campo">
                         <label>Fecha/Hora Entrada</label>
-                        <input class="input" type="datetime-local" name="fecha_entrada" value="<?= $fecha_hoy ?>"
+                        <input class="input" type="datetime-local" name="fecha_entrada" id="fecha_entrada" value="<?= $fecha_hoy ?>"
                             required>
                     </div>
                     <div class="campo">
@@ -52,24 +64,30 @@ $nuevo_codigo = generarCorrelativo($pdo);
                     </div>
                     <div class="campo">
                         <label>Placa (Unidad)</label>
-                        <select id="selectPlaca" name="id_placa" class="input"
-                            onchange="obtenerDatosVehiculo(this.value)" required>
+                        <select id="selectPlaca" name="id_placa" class="input" onchange="gestionarCambioVehiculo('modelo', this.value)" required>
                             <option value="">Seleccione...</option>
                             <?php foreach ($placas as $p): ?>
                                 <option value="<?= $p['id_placas'] ?>"><?= $p['placas'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
-
                     <div class="campo">
-                        <label>Marca</label>
-                        <input type="text" id="mostrarMarca" class="input" style="background: #e9ecef;" readonly
-                            placeholder="Esperando placa...">
+                        <label>marca</label>
+                        <select id="mostrarMarca" name="id_marca" class="input" onchange="gestionarCambioVehiculo('modelo', this.value)" required>
+                            <option value="">Seleccione...</option>
+                            <?php foreach ($marcas as $p): ?>
+                                <option value="<?= $p['id_marcas'] ?>"><?= $p['marcas'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="campo">
-                        <label>Modelo</label>
-                        <input type="text" id="mostrarModelo" class="input" style="background: #e9ecef;" readonly
-                            placeholder="Esperando placa...">
+                        <label>modelo</label>
+                        <select id="mostrarModelo" name="id_modelo" class="input" onchange="gestionarCambioVehiculo('modelo', this.value)" required>
+                            <option value="">Seleccione...</option>
+                            <?php foreach ($modelos as $p): ?>
+                                <option value="<?= $p['id_modelos'] ?>"><?= $p['modelos'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <div class="campo">
@@ -336,8 +354,7 @@ $nuevo_codigo = generarCorrelativo($pdo);
                 <textarea name="observacion" rows="2" placeholder="Notas adicionales..."></textarea>
 
                 <label>Solicitud de Repuestos</label>
-                <textarea name="pedidos" rows="2" id="detalles_repuestos"
-                    placeholder="Repuestos pendientes por solicitar..."></textarea>
+                <textarea name="pedidos" rows="2" id="detalles_repuestos" placeholder="Repuestos pendientes por solicitar..."></textarea>
                 <button type="button" onclick="enviarRepuestosPorEmail()"
                     style="background-color: #0275d8; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
                     <i>📧</i> Enviar Solicitud por Correo (API)
@@ -386,51 +403,121 @@ $nuevo_codigo = generarCorrelativo($pdo);
         </form>
     </main>
 
-
+<script src="carrusel.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
 
 
-<script src="carrusel.js"></script>
+
 
 <script>
-    function validarEnvio(e) {
-        const boton = document.activeElement.value;
-        const fecha = document.getElementById('fecha_salida').value;
 
-        if (boton === 'finalizado' && fecha === "") {
-            alert("¡Atención! Debe ingresar una fecha de salida para poder finalizar el reporte.");
+const inicio = document.getElementById('fecha_entrada');
+const salida = document.getElementById('fecha_salida');
+
+function validarEnvio(e) {
+    const boton = e.submitter ? e.submitter.value : document.activeElement.value;
+    
+    const fechaSalidaVal = salida.value;
+    const fechaEntradaVal = inicio.value;
+
+    if (boton === 'en_proceso' && fechaSalidaVal !== "") {
+        Swal.fire({
+    title: '¡no se puede!',
+    text: '¡NO! Un reporte "En Proceso" no debe tener fecha de salida. Por favor, bórrela para continuar.',
+    icon: 'error',
+    confirmButtonText: 'Aceptar'
+});
+        e.preventDefault();
+        return false;
+    }
+    
+    if (boton === 'finalizado' && fechaSalidaVal === "") {
+        Swal.fire({
+    title: '¡buenass!',
+    text: 'no no no, debe ingresar una fecha de salida para poder finalizar el reporte.',
+    icon: 'error',
+    confirmButtonText: 'Aceptar'
+});
+        e.preventDefault();
+        return false;
+    }
+
+    if (fechaEntradaVal && fechaSalidaVal) {
+        const dateEntrada = new Date(fechaEntradaVal);
+        const dateSalida = new Date(fechaSalidaVal);
+
+        if (dateSalida <= dateEntrada) {
+            Swal.fire({
+                title: '¡Error!',
+                text: 'La fecha de salida debe ser mayor a la fecha de entrada.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
             e.preventDefault();
             return false;
         }
-        return true;
     }
 
+    return true; 
+}
 
 
-    // Lógica para autocompletar Marca y elo al cambiar la Placa
-    function obtenerDatosVehiculo(idPlaca) {
-        if (!idPlaca) {
-            document.getElementById('mostrarMarca').value = "";
-            document.getElementById('mostrarModelo').value = "";
-            return;
-        }
-
-        fetch(`buscar_vehiculo_datos.php?id_placa=${idPlaca}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('mostrarMarca').value = data.marca;
-                    document.getElementById('mostrarModelo').value = data.modelo;
-                }
-            })
-            .catch(err => console.error("Error:", err));
+function gestionarCambioVehiculo(tipo, valor) {
+    if (!valor) {
+        limpiarFormularioVehiculo();
+        return;
     }
 
+    // 1. Buscamos los datos del vehículo (independientemente de si tenemos placa, marca o modelo)
+    fetch(`buscar_vehiculo_datos.php?tipo=${tipo}&valor=${valor}`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                console.error("No se encontraron datos");
+                return;
+            }
 
+            // 2. Antes de llenar, verificamos si esa PLACA ya tiene un reporte "En Proceso"
+            fetch(`verificar_placa.php?id_placa=${data.id_placa}`)
+                .then(res => res.json())
+                .then(verificacion => {
+                    if (verificacion.existe) {
+                        Swal.fire({
+                            title: '¡Vehículo ocupado!',
+                            text: 'Esta unidad ya tiene un reporte "En Proceso".',
+                            icon: 'error'
+                        });
+                        limpiarFormularioVehiculo();
+                    } else {
+                        // 3. Si todo está bien, RELLENAMOS TODO EL FORMULARIO
+                        // Sincronizamos los Selects
+                        document.getElementById('selectPlaca').value = data.id_placa;
+                        document.getElementById('mostrarMarca').value = data.id_marca;
+                        document.getElementById('mostrarModelo').value = data.id_modelo;
 
+                    }
+                });
+        })
+        .catch(err => console.error("Error en la petición maestra:", err));
+}
 
+function limpiarFormularioVehiculo() {
+    const ids = ['selectPlaca', 'mostrarMarca', 'mostrarModelo'];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.value = "";
+    });
+}
+
+// Función auxiliar para no repetir código de limpieza
+function limpiarCamposVehiculo() {
+    document.getElementById('selectPlaca').value = "";
+    if(document.getElementById('mostrarMarca')) document.getElementById('mostrarMarca').value = "";
+    if(document.getElementById('mostrarModelo')) document.getElementById('mostrarModelo').value = "";
+}
 
 
 
@@ -438,7 +525,13 @@ $nuevo_codigo = generarCorrelativo($pdo);
         const lista = document.getElementById('detalles_repuestos').value;
 
         if (lista.trim() === "") {
-            alert("Por favor, escribe los repuestos antes de enviar.");
+            Swal.fire({
+                title: '¡Atención!',
+                text: 'Por favor, escribe los repuestos antes de enviar.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+            console.log("Por favor, escribe los repuestos antes de enviar.");
             return;
         }
 
@@ -449,11 +542,21 @@ $nuevo_codigo = generarCorrelativo($pdo);
         })
             .then(response => response.text())
             .then(data => {
-                alert("Solicitud enviada con éxito a Elastic Email");
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Solicitud enviada con éxito a Elastic Email',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
                 console.log(data);
             })
             .catch(error => {
-                alert("Error al conectar con la API");
+                Swal.fire({
+                    title: '¡Error!',
+                    text: 'Error al conectar con la API',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
                 console.log(error);
             });
     }
@@ -472,6 +575,7 @@ $nuevo_codigo = generarCorrelativo($pdo);
             }
         }
     }
+
 
 
 </script>

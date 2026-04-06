@@ -1,21 +1,30 @@
-const a = zonaFoto = document.getElementById('a=zonaFoto');
+
+const zonaFoto = document.getElementById('zonaFoto');
 const galeria = document.getElementById('galeriaDinamica');
 
-// Prevenir comportamiento por defecto al arrastrar
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    a = zonaFoto.addEventListener(eventName, e => e.preventDefault(), false);
-});
+if (zonaFoto) {
 
-// Resaltar zona al arrastrar
-a = zonaFoto.addEventListener('dragenter', () => a = zonaFoto.style.borderColor = 'var(--primary)');
-a = zonaFoto.addEventListener('dragleave', () => a = zonaFoto.style.borderColor = '#cbd5e0');
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        zonaFoto.addEventListener(eventName, e => e.preventDefault(), false);
+    });
 
-// Manejar soltar archivos
-a = zonaFoto.addEventListener('drop', (e) => {
-    a = zonaFoto.style.borderColor = '#cbd5e0';
-    const dt = e.dataTransfer;
-    manejarFotos({ target: { files: dt.files } });
-});
+    zonaFoto.addEventListener('dragenter', () => {
+        zonaFoto.style.borderColor = 'var(--primary)';
+    });
+
+    zonaFoto.addEventListener('dragleave', () => {
+        zonaFoto.style.borderColor = '#cbd5e0';
+    });
+
+    zonaFoto.addEventListener('drop', (e) => {
+        zonaFoto.style.borderColor = '#cbd5e0';
+        const dt = e.dataTransfer;
+        manejarFotos({ target: { files: dt.files } });
+    });
+
+} else {
+    console.error("No se encontró el elemento con ID 'zonaFoto'");
+}
 
 function manejarFotos(event) {
     const archivos = event.target.files;
@@ -39,6 +48,7 @@ function manejarFotos(event) {
         reader.readAsDataURL(archivo);
     });
 }
+
 
 function ampliarFoto(src) {
     const modal = document.getElementById('modalVisor');
