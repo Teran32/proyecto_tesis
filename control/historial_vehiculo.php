@@ -37,74 +37,7 @@ $reportes = $stmtH->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <title>Historial - <?= $vehiculo['placas'] ?></title>
     <link rel="stylesheet" href="control_vehicular.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* Estilos específicos para el historial */
-        .contenedor-historial {
-            width: 100%;
-            max-width: 900px;
-            margin-top: 80px;
-        }
-
-        .tarjeta-reporte {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            margin-bottom: 20px;
-            color: white;
-            overflow: hidden;
-        }
-
-        .header-reporte {
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .cuerpo-reporte {
-            padding: 20px;
-            display: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .grid-detalles {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .dato {
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        .dato label {
-            color: #60a5fa;
-            font-weight: bold;
-            display: block;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .operativo {
-            background: #10b981;
-        }
-
-        .no-operativo {
-            background: #ef4444;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">    
 </head>
 
 <body>
@@ -156,9 +89,14 @@ $reportes = $stmtH->fetchAll(PDO::FETCH_ASSOC);
                         <div>
                             <div class="dato"><label>Solicitud de Repuestos</label><?= $r['pedidos'] ?: 'Ninguna' ?></div>
                             <div class="dato"><label>Observaciones</label><?= $r['observacion'] ?></div>
+                            <div class="dato"><label>Chofer</label><?= $r['chofer'] ?></div>
+                            <div class="dato"><label>Fecha Entrada</label><?= $r['fecha_entrada'] ?: 'Pendiente' ?></div>
                             <div class="dato"><label>Fecha Salida</label><?= $r['fecha_salida'] ?: 'Pendiente' ?></div>
                         </div>
                     </div>
+                    <a href="../finalizados/generar_pdf.php?id=<?= $r['id'] ?>" target="_blank" class="boton-pdf">
+                                        <i class="fas fa-file-pdf"></i> Imprimir
+                                    </a>
                 </div>
             </div>
         <?php endforeach; ?>

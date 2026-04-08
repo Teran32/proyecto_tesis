@@ -159,7 +159,90 @@ body {
     color: #1e293b;
     transform: scale(1.05);
 }
+        .contenedor-historial {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 80px;
+        }
 
+        .tarjeta-reporte {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            color: white;
+            overflow: hidden;
+        }
+
+        .header-reporte {
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .cuerpo-reporte {
+            padding: 20px;
+            display: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .grid-detalles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .dato {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .dato label {
+            color: #60a5fa;
+            font-weight: bold;
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .operativo {
+            background: #10b981;
+        }
+
+        .no-operativo {
+            background: #ef4444;
+        }
+
+        .boton-pdf {
+    background: rgba(255, 255, 255, 0.1);
+    border: solid black 2px;
+    color: rgb(0, 0, 0);
+    padding: 6px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.3s;
+}
+.boton-pdf:hover {
+    background-color: #be123c;
+    transform: translateY(-2px);
+}
+    
 @media (max-width: 600px) {
     .tarjeta-marca {
         flex: 1 1 100%;
