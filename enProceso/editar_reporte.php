@@ -4,6 +4,8 @@ include '../gestionDatos/conexion.php';
 $placas = $pdo->query("SELECT id_placas, placas FROM placas")->fetchAll(PDO::FETCH_ASSOC);
 $choferes = $pdo->query("SELECT id_chofer, chofer FROM choferes")->fetchAll(PDO::FETCH_ASSOC);
 $tipos = $pdo->query("SELECT id_tipo_trabajo, tipo_trabajo FROM tipo_trabajo")->fetchAll(PDO::FETCH_ASSOC);
+$marcas = $pdo->query("SELECT id_marcas, marcas FROM marcas")->fetchAll(PDO::FETCH_ASSOC);
+$modelos = $pdo->query("SELECT id_modelos, modelos FROM modelos")->fetchAll(PDO::FETCH_ASSOC);
 
 $id_reporte = isset($_GET['id']) ? $_GET['id'] : 0;
 $stmt_r = $pdo->prepare("SELECT * FROM reportes WHERE id = ?");
@@ -46,14 +48,15 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
                         <input class="input" type="datetime-local" name="fecha_entrada"
                             required>
                     </div>
+
                     <div class="campo">
                         <label>Fecha/Hora Salida</label>
                         <input class="input" type="datetime-local" name="fecha_salida" id="fecha_salida">
                     </div>
+
                     <div class="campo">
                         <label>Placa (Unidad)</label>
-                        <select id="selectPlaca" name="id_placa" class="input"
-                            onchange="obtenerDatosVehiculo(this.value)" required>
+                        <select id="selectPlaca" name="id_placa" class="input" onchange="gestionarCambioVehiculo('placa', this.value)" required>
                             <option value="">Seleccione...</option>
                             <?php foreach ($placas as $p): ?>
                                 <option value="<?= $p['id_placas'] ?>"><?= $p['placas'] ?></option>
@@ -61,16 +64,41 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
                         </select>
                     </div>
 
+
+
+
+
                     <div class="campo">
-                        <label>Marca</label>
-                        <input type="text" id="mostrarMarca" class="input" style="background: #e9ecef;" readonly
-                            placeholder="Esperando placa...">
+                        <label>marca</label>
+                        <select id="mostrarMarca" name="id_marca" class="input" onchange="gestionarCambioVehiculo('marca', this.value)" required>
+                            <option value="">Seleccione...</option>
+                            <?php foreach ($marcas as $p): ?>
+                                <option value="<?= $p['id_marcas'] ?>"><?= $p['marcas'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
+
                     <div class="campo">
-                        <label>Modelo</label>
-                        <input type="text" id="mostrarModelo" class="input" style="background: #e9ecef;" readonly
-                            placeholder="Esperando placa...">
+                        <label>modelo</label>
+                        <select id="mostrarModelo" name="id_modelo" class="input" onchange="gestionarCambioVehiculo('modelo', this.value)" required>
+                            <option value="">Seleccione...</option>
+                            <?php foreach ($modelos as $p): ?>
+                                <option value="<?= $p['id_modelos'] ?>"><?= $p['modelos'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
+
+
+
+
+
+
+
+
+
+
+
+                    
 
                     <div class="campo">
                         <label>Chofer </label>
@@ -81,6 +109,7 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
                             <?php endforeach; ?>
                         </select>
                     </div>
+
                     <div class="campo">
                         <label>Tipo de Trabajo</label>
                         <select name="id_tipo_trabajo" class="input" required>
@@ -90,15 +119,24 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
                             <?php endforeach; ?>
                         </select>
                     </div>
+
                     <div class="campo">
                         <label>Kilometraje Actual</label>
                         <input type="number" name="km_actual" class="input" required>
                     </div>
+
                     <div class="campo">
                         <label>Próximo Kilometraje</label>
                         <input type="number" name="km_prox" class="input" required>
                     </div>
                 </div>
+
+
+
+
+
+
+
                 
                 <div class="ayuda">
                     <div class="ayudaa">
@@ -320,6 +358,15 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
                     
             </section>
 
+
+
+
+
+
+
+
+
+
             <section class="tarjeta_form">
                 <h3><i class="icono">🔧</i> Informe Técnico</h3>
                 <label>Falla Detectada</label>
@@ -401,6 +448,10 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
     </main>
 
     <script src="../nuevoReportes/carrusel.js"></script>
+    <script src="../nuevoReportes/placa_modelo_marca.js"></script>
+</body>
+
+</html>
 
     <script>
         function validarEnvio(e) {
@@ -415,6 +466,10 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
             return true;
         }
 
+
+
+
+        // para rellenar los campos de marca y modelo al selecccionar la placa.
         function obtenerDatosVehiculo(idPlaca) {
             if (!idPlaca) {
                 document.getElementById('mostrarMarca').value = "";
@@ -422,7 +477,7 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
                 return;
             }
 
-            fetch(`../nuevoReportes/buscar_vehiculo_datos.php?id_placa=${idPlaca}`) 
+            fetch(`../nuevoReportes/buscar_vehiculo_datos.php?tipo=placa&valor=${idPlaca}`) 
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
@@ -430,8 +485,14 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
                         document.getElementById('mostrarModelo').value = data.modelo;
                     }
                 })
-                .catch(err => console.error("Error:", err));
+            .catch(err => console.error("Error:", err));
         }
+        // aca termina la funcion de rellenar
+
+
+
+
+
 
         function enviarRepuestosPorEmail() {
             const lista = document.getElementById('detalles_repuestos').value;
@@ -472,34 +533,37 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
             }
         }
 
+
+
+
+
+        // carga los datos de el archovo php obtener_datos.php para rellenar los campos dandole el valor= value
         function cargarDatosMaestros() {
-            const id = new URLSearchParams(window.location.search).get('id');
-            if (!id) return;
+    const id = new URLSearchParams(window.location.search).get('id');
+    if (!id) return;
 
-            fetch('obtener_datos.php?id=' + id)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('input_id_reporte').value = data.id;
-                    
-                    document.querySelector('[name="fecha_entrada"]').value = data.fecha_entrada ? data.fecha_entrada.replace(" ", "T") : "";
-                    if (data.fecha_salida) document.getElementById('fecha_salida').value = data.fecha_salida.replace(" ", "T");
+    fetch('obtener_datos.php?id=' + id)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('input_id_reporte').value = data.id;
+            
+            document.querySelector('[name="fecha_entrada"]').value = data.fecha_entrada ? data.fecha_entrada.replace(" ", "T") : "";
+            if (data.fecha_salida) document.getElementById('fecha_salida').value = data.fecha_salida.replace(" ", "T");
 
-                    document.getElementById('selectPlaca').value = data.id_placa;
-                    document.getElementById('mostrarMarca').value = data.marcas;
-                    document.getElementById('mostrarModelo').value = data.modelos;
-                    document.querySelector('[name="id_chofer"]').value = data.id_chofer;
-                    document.querySelector('[name="id_tipo_trabajo"]').value = data.id_tipo_trabajo;
-                    document.querySelector('[name="km_actual"]').value = data.km_actual;
-                    document.querySelector('[name="km_prox"]').value = data.km_prox;
-
-                    document.querySelector('[name="falla_detectada"]').value = data.falla_detectada;
-                    document.getElementById('trabajo_realizado').value = data.trabajo_realizado;
-                    document.querySelector('[name="repuestos"]').value = data.repuestos;
-                    document.querySelector('[name="observacion"]').value = data.observacion;
-                    document.getElementById('detalles_repuestos').value = data.pedidos;
-                });
-        }
+            document.getElementById('selectPlaca').value = data.id_placa;
+            document.getElementById('mostrarMarca').value = data.id_marcas;  
+            document.getElementById('mostrarModelo').value = data.id_modelos; 
+            document.querySelector('[name="id_chofer"]').value = data.id_chofer;
+            document.querySelector('[name="id_tipo_trabajo"]').value = data.id_tipo_trabajo;
+            
+            document.querySelector('[name="km_actual"]').value = data.km_actual;
+            document.querySelector('[name="km_prox"]').value = data.km_prox;
+            document.querySelector('[name="falla_detectada"]').value = data.falla_detectada;
+            document.getElementById('trabajo_realizado').value = data.trabajo_realizado;
+            document.querySelector('[name="repuestos"]').value = data.repuestos;
+            document.querySelector('[name="observacion"]').value = data.observacion;
+            document.getElementById('detalles_repuestos').value = data.pedidos;
+        })
+        .catch(err => console.error("Error al cargar datos:", err));
+}
     </script>
-</body>
-
-</html>

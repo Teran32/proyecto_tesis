@@ -64,22 +64,29 @@ $nuevo_codigo = generarCorrelativo($pdo);
                     </div>
                     <div class="campo">
                         <label>Placa (Unidad)</label>
-                        <select id="selectPlaca" name="id_placa" class="input" onchange="gestionarCambioVehiculo('modelo', this.value)" required>
+                        <select id="selectPlaca" name="id_placa" class="input" onchange="gestionarCambioVehiculo('placa', this.value)" required>
                             <option value="">Seleccione...</option>
                             <?php foreach ($placas as $p): ?>
                                 <option value="<?= $p['id_placas'] ?>"><?= $p['placas'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
+
+
+
+
+
+
                     <div class="campo">
                         <label>marca</label>
-                        <select id="mostrarMarca" name="id_marca" class="input" onchange="gestionarCambioVehiculo('modelo', this.value)" required>
+                        <select id="mostrarMarca" name="id_marca" class="input" onchange="gestionarCambioVehiculo('marca', this.value)" required>
                             <option value="">Seleccione...</option>
                             <?php foreach ($marcas as $p): ?>
                                 <option value="<?= $p['id_marcas'] ?>"><?= $p['marcas'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
+
                     <div class="campo">
                         <label>modelo</label>
                         <select id="mostrarModelo" name="id_modelo" class="input" onchange="gestionarCambioVehiculo('modelo', this.value)" required>
@@ -90,15 +97,22 @@ $nuevo_codigo = generarCorrelativo($pdo);
                         </select>
                     </div>
 
+
+
+
+
+                    
+
                     <div class="campo">
                         <label>Chofer </label>
-                        <select name="id_chofer" class="input" required>
+                        <select name="id_chofer" class="input" >
                             <option value="">Seleccione...</option>
                             <?php foreach ($choferes as $c): ?>
                                 <option value="<?= $c['id_chofer'] ?>"><?= $c['chofer'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
+
                     <div class="campo">
                         <label>Tipo de Trabajo</label>
                         <select name="id_tipo_trabajo" class="input" required>
@@ -108,15 +122,21 @@ $nuevo_codigo = generarCorrelativo($pdo);
                             <?php endforeach; ?>
                         </select>
                     </div>
+
                     <div class="campo">
                         <label>Kilometraje Actual</label>
-                        <input type="number" name="km_actual" class="input" required>
+                        <input type="number" name="km_actual" class="input">
                     </div>
                     <div class="campo">
                         <label>Próximo Kilometraje</label>
-                        <input type="number" name="km_prox" class="input" required>
+                        <input type="number" name="km_prox" class="input">
                     </div>
                 </div>
+
+
+
+
+
                 <div class="ayuda">
                     <div class="ayudaa">
                         <span class="selector" style="font-size: 12px;">Aceite de motor</span>
@@ -404,6 +424,7 @@ $nuevo_codigo = generarCorrelativo($pdo);
     </main>
 
 <script src="carrusel.js"></script>
+<script src="placa_modelo_marca.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
@@ -465,44 +486,27 @@ function validarEnvio(e) {
 }
 
 
-function gestionarCambioVehiculo(tipo, valor) {
-    if (!valor) {
-        limpiarFormularioVehiculo();
-        return;
-    }
 
-    // 1. Buscamos los datos del vehículo (independientemente de si tenemos placa, marca o modelo)
-    fetch(`buscar_vehiculo_datos.php?tipo=${tipo}&valor=${valor}`)
-        .then(res => res.json())
-        .then(data => {
-            if (!data.success) {
-                console.error("No se encontraron datos");
-                return;
-            }
 
-            // 2. Antes de llenar, verificamos si esa PLACA ya tiene un reporte "En Proceso"
-            fetch(`verificar_placa.php?id_placa=${data.id_placa}`)
-                .then(res => res.json())
-                .then(verificacion => {
-                    if (verificacion.existe) {
-                        Swal.fire({
-                            title: '¡Vehículo ocupado!',
-                            text: 'Esta unidad ya tiene un reporte "En Proceso".',
-                            icon: 'error'
-                        });
-                        limpiarFormularioVehiculo();
-                    } else {
-                        // 3. Si todo está bien, RELLENAMOS TODO EL FORMULARIO
-                        // Sincronizamos los Selects
-                        document.getElementById('selectPlaca').value = data.id_placa;
-                        document.getElementById('mostrarMarca').value = data.id_marca;
-                        document.getElementById('mostrarModelo').value = data.id_modelo;
 
-                    }
-                });
-        })
-        .catch(err => console.error("Error en la petición maestra:", err));
+
+
+// Función auxiliar para limpiar y rellenar selects dinámicamente
+function filtrarSelectores(idElemento, opciones) {
+    const select = document.getElementById(idElemento);
+    select.innerHTML = '<option value="">Seleccione...</option>'; // Limpiar
+    
+    opciones.forEach(opt => {
+        const el = document.createElement('option');
+        el.value = opt.id;
+        el.textContent = opt.nombre;
+        select.appendChild(el);
+    });
 }
+
+
+
+
 
 function limpiarFormularioVehiculo() {
     const ids = ['selectPlaca', 'mostrarMarca', 'mostrarModelo'];
@@ -511,6 +515,7 @@ function limpiarFormularioVehiculo() {
         if(el) el.value = "";
     });
 }
+
 
 // Función auxiliar para no repetir código de limpieza
 function limpiarCamposVehiculo() {
@@ -561,6 +566,9 @@ function limpiarCamposVehiculo() {
             });
     }
 
+
+
+    
     function actualizarDetalles(selectElement, nombreRepuesto) {
         const accion = selectElement.value;
         const cuadroTexto = document.getElementById('trabajo_realizado');
