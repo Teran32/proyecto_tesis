@@ -4,7 +4,13 @@ function gestionarCambioVehiculo(tipo, valor) {
         return;
     }
 
-    fetch(`buscar_vehiculo_datos.php?tipo=${tipo}&valor=${valor}`)
+    // Si la página define VEHICULO_API_URL, la usamos (ej: editar_reporte.php)
+    // Si no, usamos la ruta relativa de nuevoReportes por defecto
+    const apiUrl = (typeof VEHICULO_API_URL !== 'undefined')
+        ? VEHICULO_API_URL
+        : 'buscar_vehiculo_datos.php';
+
+    fetch(`${apiUrl}?tipo=${tipo}&valor=${valor}`)
         .then(res => res.json())
         .then(data => {
             if (!data.success) return;

@@ -447,6 +447,10 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
         </form>
     </main>
 
+    <script>
+        // Ruta al backend de vehículos desde esta carpeta
+        const VEHICULO_API_URL = '../nuevoReportes/buscar_vehiculo_datos.php';
+    </script>
     <script src="../nuevoReportes/carrusel.js"></script>
     <script src="../nuevoReportes/placa_modelo_marca.js"></script>
 </body>
@@ -469,25 +473,8 @@ $r = $stmt_r->fetch(PDO::FETCH_ASSOC);
 
 
 
-        // para rellenar los campos de marca y modelo al selecccionar la placa.
-        function obtenerDatosVehiculo(idPlaca) {
-            if (!idPlaca) {
-                document.getElementById('mostrarMarca').value = "";
-                document.getElementById('mostrarModelo').value = "";
-                return;
-            }
-
-            fetch(`../nuevoReportes/buscar_vehiculo_datos.php?tipo=placa&valor=${idPlaca}`) 
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('mostrarMarca').value = data.marca;
-                        document.getElementById('mostrarModelo').value = data.modelo;
-                    }
-                })
-            .catch(err => console.error("Error:", err));
-        }
-        // aca termina la funcion de rellenar
+        // La función obtenerDatosVehiculo ya es manejada por placa_modelo_marca.js
+        // via la variable VEHICULO_API_URL declarada arriba.
 
 
 

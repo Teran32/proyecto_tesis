@@ -18,15 +18,27 @@ $stmtV = $pdo->prepare($sqlVehiculo);
 $stmtV->execute([$id_placa]);
 $vehiculo = $stmtV->fetch(PDO::FETCH_ASSOC);
 
-// 3. Consultar los reportes (El Historial) con todos los campos que pediste
+// 3. Historial: todos los finalizados + el "en proceso" solo si es el más reciente
 $sqlHistorial = "SELECT r.*, t.tipo_trabajo, c.chofer 
                  FROM reportes r
                  LEFT JOIN tipo_trabajo t ON r.id_tipo_trabajo = t.id_tipo_trabajo
                  LEFT JOIN choferes c ON r.id_chofer = c.id_chofer
-                 WHERE r.id_placa = ? 
+                 WHERE r.id_placa = ?
+                   AND (
+                       r.estado = 1
+                       OR (
+                           r.estado = 0
+                           AND r.id = (
+                               SELECT id FROM reportes
+                               WHERE id_placa = ?
+                               ORDER BY fecha_entrada DESC
+                               LIMIT 1
+                           )
+                       )
+                   )
                  ORDER BY r.fecha_entrada DESC";
 $stmtH = $pdo->prepare($sqlHistorial);
-$stmtH->execute([$id_placa]);
+$stmtH->execute([$id_placa, $id_placa]);
 $reportes = $stmtH->fetchAll(PDO::FETCH_ASSOC);
 ?>
 

@@ -2,19 +2,38 @@
 include 'gestionDatos/conexion.php';
 
 try {
-    $stmtProceso = $pdo->query("SELECT COUNT(*) FROM reportes WHERE estado = 0");
-    $totalProceso = $stmtProceso->fetchColumn();
+    // Reportes en taller (estado = 0)
+    $totalProceso = $pdo->query("SELECT COUNT(*) FROM reportes WHERE estado = 0")->fetchColumn();
 
-    // 3. Contar vehículos "Finalizados" en el mes actual (estado = 1)
-    // Usamos MONTH(CURRENT_DATE) para que solo cuente los de este mes
-    $stmtFinalizado = $pdo->query("SELECT COUNT(*) FROM reportes WHERE estado = 1 
-                                AND MONTH(fecha_entrada) = MONTH(CURRENT_DATE()) 
-                                AND YEAR(fecha_entrada) = YEAR(CURRENT_DATE())");
-    $totalFinalizado = $stmtFinalizado->fetchColumn();
+    // Finalizados en el mes actual (estado = 1)
+    $totalFinalizado = $pdo->query("SELECT COUNT(*) FROM reportes WHERE estado = 1
+                                    AND MONTH(fecha_entrada) = MONTH(CURRENT_DATE())
+                                    AND YEAR(fecha_entrada) = YEAR(CURRENT_DATE())")->fetchColumn();
+
+    // Total de choferes registrados
+    $totalChoferes = $pdo->query("SELECT COUNT(*) FROM choferes")->fetchColumn();
+
+    // Total de reportes históricos
+    $totalReportes = $pdo->query("SELECT COUNT(*) FROM reportes")->fetchColumn();
+
+     $totalVehiculos = $pdo->query("SELECT COUNT(*) FROM placas")->fetchColumn();
+    // Choferes con vehículo actualmente en taller
+    $choferesEnTaller = $pdo->query(
+        "SELECT COUNT(DISTINCT id_chofer) FROM reportes WHERE estado = 0"
+    )->fetchColumn();
+
+    // Vehículos activosss
+    $vehiculosActivos = $pdo->query(
+        "SELECT COUNT(DISTINCT id_placa) FROM reportes"
+    )->fetchColumn();
 
 } catch (PDOException $e) {
     $totalProceso = 0;
     $totalFinalizado = 0;
+    $totalChoferes = 0;
+    $totalReportes = 0;
+    $vehiculosActivos = 0;
+    $totalVehiculos = 0;
 }
 ?>
 
@@ -31,11 +50,71 @@ try {
 </head>
 
 <body>
-<a href="" style="display: flex; justify-content: end; top: 10px; right: 10px; color:white; text-decoration: none; margin: 10px;">Entrar como administrador</a>
-    <header>
+
+    <!-- Sidebar de estadísticas -->
+    <aside class="sidebar-stats">
+        <div class="sidebar-titulo">📊 Resumen</div>
+
+        <div class="sidebar-stat">
+            <span class="sidebar-num" style="color:#60a5fa"><?= $totalChoferes ?></span>
+            <span class="sidebar-label">Choferes</span>
+        </div>
+        <div class="sidebar-stat">
+            <span class="sidebar-num" style="color:#a78bfa"><?= $vehiculosActivos ?></span>
+            <span class="sidebar-label">Vehículos activos</span>
+        </div>
+
+        <div class="sidebar-stat">
+            <span class="sidebar-num" style="color:#10b981"><?= $totalVehiculos ?></span>
+            <span class="sidebar-label">total de vehiculos</span>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-stat">
+            <span class="sidebar-num" style="color:#ef4444"><?= $totalProceso ?></span>
+            <span class="sidebar-label">En taller ahora</span>
+        </div>
+        <div class="sidebar-stat">
+            <span class="sidebar-num" style="color:#10b981"><?= $totalFinalizado ?></span>
+            <span class="sidebar-label">Finalizados este mes</span>
+        </div>
+        <div class="sidebar-stat">
+            <span class="sidebar-num" style="color:#f59e0b"><?= $totalReportes ?></span>
+        <span class="sidebar-label">Reportes totales</span>
+        </div>
+        <img src="imagenes/sertran.jpg" style="width: 90%; height: 20%; margin-top:20px; border-radius:20px;">
+    </aside>
+
+    <main class="contenido-principal">
+
+    <header style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
+        <div>
         <h1>SERTRANSFAL</h1>
         <p>Sistema de Gestión de Vehículos</p>
-
+        </div>
+            <button class="btn_salir" style="
+            top:20px;
+            right: 20px;
+            position: fixed;text-decoration: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor:pointer;"> cerrar sesion
+            </button>
+            <button id="btn_gestionUsuario" class="btn_salir" style="
+            
+            margin-top:22px;
+            right: 20px;
+            position: fixed;
+            text-decoration: none;
+        padding: 10px 10px;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor:pointer;"> gestion de usuarios
+            </button>
     </header>
 
     <div class="contenedor_menu">
@@ -60,6 +139,10 @@ try {
             <div>🚗</div>
             control vehicular
         </a>
+        <a href="control_chofer/control_chofer.php" class="caja_opcion">
+            <div>👨</div>
+            control por chofer
+        </a>
     </div>
 
     <footer class="barra_estado">
@@ -82,6 +165,21 @@ try {
         </div>
     </footer>
 
+    </main><!-- fin contenido-principal -->
+
 </body>
 
 </html>
+
+<script>
+
+    const salir = document.querySelector('.btn_salir');
+    salir.addEventListener('click', () => {
+        window.location.href = 'index.php';
+    });
+    const gestionUsuario = document.getElementById('btn_gestionUsuario');
+    gestionUsuario.addEventListener('click', () => {
+        window.location.href = 'gestion_usuarios/gestion_de_usuarios.php';
+    });
+
+</script>
